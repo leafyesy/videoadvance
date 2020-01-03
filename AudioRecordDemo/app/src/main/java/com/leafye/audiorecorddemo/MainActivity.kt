@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.leafye.audiorecorddemo.adapter.ResultShowAdapter
 import com.leafye.audiorecorddemo.audio.AudioRead
 import com.leafye.audiorecorddemo.audio.AudioRecorder
@@ -14,6 +13,7 @@ import com.leafye.audiorecorddemo.linxi.LinxiWebSocket
 import com.leafye.audiorecorddemo.linxi.callback.AudioParseResultCallback
 import com.leafye.audiorecorddemo.linxi.callback.WebSocketCallback
 import com.leafye.audiorecorddemo.linxi.data.Content
+import com.leafye.audiorecorddemo.pocketsphinx.PocketSphinxActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.Executors.*
 
@@ -42,6 +42,13 @@ class MainActivity : AppCompatActivity() {
         connectServer.setOnClickListener { startConnect() }
         send.setOnClickListener { sendAudioData() }
         close.setOnClickListener { LinxiWebSocket.close() }
+        startProtogenesis.setOnClickListener {
+            //            TestProtogenesisAudioRecognizerActivity.startActivity(
+//                this
+//            )
+            PocketSphinxActivity.startActivity(this)
+        }
+
         LinxiWebSocket.registerWebSocketCallback(webSocketCallback)
         LinxiWebSocket.registerAudioParseResultCallback(audioParseResultCallback)
     }
