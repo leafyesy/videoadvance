@@ -43,9 +43,7 @@ class MainActivity : AppCompatActivity() {
         send.setOnClickListener { sendAudioData() }
         close.setOnClickListener { LinxiWebSocket.close() }
         startProtogenesis.setOnClickListener {
-            //            TestProtogenesisAudioRecognizerActivity.startActivity(
-//                this
-//            )
+            //TestProtogenesisAudioRecognizerActivity.startActivity(this)
             PocketSphinxActivity.startActivity(this)
         }
 
@@ -58,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager(this@MainActivity)
                 .apply {
                     stackFromEnd = true
-                    //reverseLayout = true
                 }
     }
 
