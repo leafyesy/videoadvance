@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':pocketsphinxlib', ':speexlib'
 rootProject.name='AudioRecordDemo'

@@ -1,14 +1,17 @@
 package com.leafye.audiorecorddemo.audio
 
+import android.os.Environment
 import android.os.SystemClock
 import android.util.Log
 import com.leafye.audiorecorddemo.audio.utils.PcmToWav
 import com.leafye.audiorecorddemo.audio.utils.Raw2Spx
+import com.leafye.speex.SpeexUtil
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.RandomAccessFile
 import java.nio.charset.Charset
+import kotlin.experimental.and
 
 /**
  *
@@ -24,23 +27,46 @@ class AudioRead(private val filePath: String, private val callback: ReadCallback
         Raw2Spx()
     }
 
+    val speexUtil by lazy { SpeexUtil() }
+
     override fun run() {
-        //val tranToMav = tranToMav() ?: return
+        val tranToMav = tranToMav() ?: return
+        tranToSpeex2(tranToMav)
+
         //val newSpeexFile = tranToSpeex()
-        val bytes = ByteArray(CHUNCKED_SIZE)
-        try {
-            if (read1(bytes, filePath)) return
-        } catch (e: FileNotFoundException) {
-            Log.w(TAG, "文件没找到:${filePath}")
-        }
+//        val bytes = ByteArray(CHUNCKED_SIZE)
+//        try {
+//            if (read1(bytes, filePath)) return
+//        } catch (e: FileNotFoundException) {
+//            Log.w(TAG, "文件没找到:${filePath}")
+//        }
     }
 
-    private fun tranToSpeex(): File? {
+    private fun tranToSpeex1(): File? {
         val pcmFile = File(filePath)
         val name = pcmFile.name
         val newSpeexFile = File(pcmFile.parent + "/" + name + ".speex")
         raw2Spx.raw2spx(filePath, newSpeexFile.absolutePath)
         return newSpeexFile
+    }
+
+    private fun tranToSpeex2(file: File): File? {
+        val raf = RandomAccessFile(file, "r")
+        val saveFilePath = Environment.getExternalStorageDirectory().absolutePath + "/save_file.spx"
+        val raf2 = RandomAccessFile(saveFilePath, "rw")
+        var len = 0
+        val sArr = ShortArray(1024)
+        val bArr = ByteArray(1024)
+        val bArrBuffer = ByteArray(1024)
+        while (len != -1) {
+            len = raf.read(bArrBuffer)
+            bArrBuffer.forEachIndexed { index, byte ->
+                sArr[index] = (byte.toShort() and 0xFF)
+            }
+            speexUtil.encode(sArr, 0, bArr, 1024)
+            raf2.write(bArr)
+        }
+        return File(saveFilePath)
     }
 
     private fun tranToMav(): File? {

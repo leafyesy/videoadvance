@@ -152,8 +152,6 @@ object LinxiWebSocket {
         //val buffer = ByteBuffer.wrap(byteArr)
         return try {
             webSocket?.send(encoderByte) ?: false
-        } catch (e: IllegalArgumentException) {
-            false
         } catch (e: NotYetConnectedException) {
             false
         } catch (e: WebsocketNotConnectedException) {
@@ -262,7 +260,7 @@ object LinxiWebSocket {
     }
 
     private fun buildWsUrl() =
-        "$BASE_URL?$PARAM_LANG=$_LANG_EN&$PARAM_CODEC=$_CODEC_RAW&$PARAM_APP_ID=$_APP_ID"
+        "$BASE_URL?$PARAM_LANG=$_LANG_CN&$PARAM_CODEC=$_CODEC_RAW&$PARAM_APP_ID=$_APP_ID"
 
     private fun notifyWsOpen() {
         webSocketCallbackList.forEach { it.onOpen() }

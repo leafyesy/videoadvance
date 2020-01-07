@@ -2,6 +2,7 @@ package com.leafye.audiorecorddemo.linxi
 
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.experimental.and
 
 class LinxiEncoder {
 
@@ -17,7 +18,7 @@ class LinxiEncoder {
                 put("sid", sid)
                 val jsonArray = JSONArray().apply {
                     byteArr.forEach {
-                        put(it.toInt() and 0xFF)//+0x80  128
+                        put(it.toShort() and 0xFF)//+0x80  128
                         //put(it)
                     }//对数据进行偏移
                 }
