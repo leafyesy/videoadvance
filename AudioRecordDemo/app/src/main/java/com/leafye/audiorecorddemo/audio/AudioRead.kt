@@ -30,16 +30,16 @@ class AudioRead(private val filePath: String, private val callback: ReadCallback
     val speexUtil by lazy { SpeexUtil() }
 
     override fun run() {
-        val tranToMav = tranToMav() ?: return
-        tranToSpeex2(tranToMav)
+//        val tranToMav = tranToMav() ?: return
+//        tranToSpeex2(tranToMav)
 
         //val newSpeexFile = tranToSpeex()
-//        val bytes = ByteArray(CHUNCKED_SIZE)
-//        try {
-//            if (read1(bytes, filePath)) return
-//        } catch (e: FileNotFoundException) {
-//            Log.w(TAG, "文件没找到:${filePath}")
-//        }
+        val bytes = ByteArray(CHUNCKED_SIZE)
+        try {
+            if (read1(bytes, filePath)) return
+        } catch (e: FileNotFoundException) {
+            Log.w(TAG, "文件没找到:${filePath}")
+        }
     }
 
     private fun tranToSpeex1(): File? {
