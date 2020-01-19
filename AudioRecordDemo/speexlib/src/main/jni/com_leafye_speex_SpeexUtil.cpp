@@ -95,8 +95,8 @@ JNIEXPORT jint JNICALL Java_com_leafye_speex_SpeexUtil_decode
  */
 JNIEXPORT jint JNICALL Java_com_leafye_speex_SpeexUtil_encode
         (JNIEnv *env, jobject obj, jshortArray lin, jint offset, jbyteArray encoded, jint size){
-    jshort buffer[enc_frame_size];
-    jbyte output_buffer[enc_frame_size];
+    jshort buffer[enc_frame_size];//short数组 要压缩的数据
+    jbyte output_buffer[enc_frame_size];//byte数组 压缩后的数据
     int nsamples = (size-1)/enc_frame_size + 1;
     int i, tot_bytes = 0;
 

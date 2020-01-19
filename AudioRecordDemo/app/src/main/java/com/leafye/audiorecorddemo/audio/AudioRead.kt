@@ -19,7 +19,7 @@ import kotlin.experimental.and
 class AudioRead(private val filePath: String, private val callback: ReadCallback) : Runnable {
     companion object {
         private const val TAG = "AudioRead"
-        private const val CHUNCKED_SIZE = 1280//音频读取的缓存字节数
+        private const val CHUNCKED_SIZE = 320//音频读取的缓存字节数
         private const val INTERNAL_TIME = 40L//ms
     }
 
@@ -31,21 +31,29 @@ class AudioRead(private val filePath: String, private val callback: ReadCallback
 
     override fun run() {
 //        val tranToMav = tranToMav() ?: return
-//        tranToSpeex2(tranToMav)
-
+//        val tranToSpeex2 = tranToSpeex1(tranToMav.absolutePath)
+//        if (tranToSpeex2 == null) {
+//            Log.d(TAG, "tranToSpeex2 == null")
+//            return
+//        }
+//        val saveFilePath = Environment.getExternalStorageDirectory().absolutePath + "/save_file.spx"
+        val saveFilePath =
+            Environment.getExternalStorageDirectory().absolutePath + "/audio_tmp.pcm.wav.spx"
+        val saveFilePath2 =
+            Environment.getExternalStorageDirectory().absolutePath + "/audio_tmp_by_spx.wav"
+        raw2Spx.spx2raw(saveFilePath,saveFilePath2)
         //val newSpeexFile = tranToSpeex()
-        val bytes = ByteArray(CHUNCKED_SIZE)
-        try {
-            if (read1(bytes, filePath)) return
-        } catch (e: FileNotFoundException) {
-            Log.w(TAG, "文件没找到:${filePath}")
-        }
+//        try {
+//            if (read1(saveFilePath)) return
+//        } catch (e: FileNotFoundException) {
+//            Log.w(TAG, "文件没找到:${saveFilePath}")
+//        }
     }
 
-    private fun tranToSpeex1(): File? {
+    private fun tranToSpeex1(filePath: String): File? {
         val pcmFile = File(filePath)
         val name = pcmFile.name
-        val newSpeexFile = File(pcmFile.parent + "/" + name + ".speex")
+        val newSpeexFile = File(pcmFile.parent + "/" + name + ".spx")
         raw2Spx.raw2spx(filePath, newSpeexFile.absolutePath)
         return newSpeexFile
     }
@@ -55,15 +63,18 @@ class AudioRead(private val filePath: String, private val callback: ReadCallback
         val saveFilePath = Environment.getExternalStorageDirectory().absolutePath + "/save_file.spx"
         val raf2 = RandomAccessFile(saveFilePath, "rw")
         var len = 0
-        val sArr = ShortArray(1024)
-        val bArr = ByteArray(1024)
-        val bArrBuffer = ByteArray(1024)
+        val sArr = ShortArray(speexUtil.frameSize)
+        val bArr = ByteArray(speexUtil.frameSize)
+        val bArrBuffer = ByteArray(speexUtil.frameSize)
+        var curIndex = 0
         while (len != -1) {
             len = raf.read(bArrBuffer)
+            curIndex += len
+            Log.d(TAG, "curIndex:$curIndex")
             bArrBuffer.forEachIndexed { index, byte ->
                 sArr[index] = (byte.toShort() and 0xFF)
             }
-            speexUtil.encode(sArr, 0, bArr, 1024)
+            speexUtil.encode(sArr, 0, bArr, len)
             raf2.write(bArr)
         }
         return File(saveFilePath)
@@ -82,7 +93,8 @@ class AudioRead(private val filePath: String, private val callback: ReadCallback
         return newWavFile
     }
 
-    private fun read1(bytes: ByteArray, filePath: String): Boolean {
+    private fun read1(filePath: String): Boolean {
+        val bytes = ByteArray(CHUNCKED_SIZE)
         val raf = RandomAccessFile(filePath, "r")
         var curLen = 0L
         var num = 1
