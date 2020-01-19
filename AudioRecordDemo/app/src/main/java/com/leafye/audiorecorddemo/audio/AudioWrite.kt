@@ -5,7 +5,6 @@ import android.media.AudioRecord
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.nio.ByteBuffer
 
 /**
  * 音频读取线程
