@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun startGl() {
         val eglGetDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
-
+        val majorVersion = IntArray(1)
+        val minorVersion = IntArray(1)
+        EGL14.eglInitialize(eglGetDisplay, majorVersion, 1, minorVersion, 1)
     }
 }
