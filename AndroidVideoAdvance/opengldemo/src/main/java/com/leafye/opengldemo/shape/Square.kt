@@ -5,11 +5,20 @@ import com.leafye.opengldemo.utils.OpenGLUtils
 import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 
-class Square {
+class Square:BaseShape() {
+    override fun initOpenGLParam(): MutableList<Int> {
+        //----------------这里的代码基本相同
+        val vertexShader = OpenGLUtils.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
+        val fragmentShader = OpenGLUtils.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
+        return mutableListOf(vertexShader,fragmentShader)
+    }
 
-    private var vertexBuffer: FloatBuffer? = null
-    private var drawListByteBuffer: ByteBuffer? = null
-    private val program: Int
+    private val vertexBuffer: FloatBuffer by lazy{
+        OpenGLUtils.floatBufferUtil(squareCoords)
+    }
+    private val drawListByteBuffer: ByteBuffer by lazy{
+        OpenGLUtils.byteBufferUtil(drawOrderByte)
+    }
 
     private var positionHandle: Int = 0
     private var colorHandle: Int = 0
@@ -43,22 +52,6 @@ class Square {
                     "}"
 
         private val colorArr = floatArrayOf(255F, 0F, 0F, 1.0F)
-    }
-
-
-    init {
-        vertexBuffer = OpenGLUtils.floatBufferUtil(squareCoords)
-        drawListByteBuffer = OpenGLUtils.byteBufferUtil(drawOrderByte)
-        //----------------这里的代码基本相同
-        val vertexShader = OpenGLUtils.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
-        val fragmentShader = OpenGLUtils.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
-        //创建空的OpenGL ES程序
-        program = GLES20.glCreateProgram()
-        GLES20.glAttachShader(program, vertexShader)
-        GLES20.glAttachShader(program, fragmentShader)
-        //创建OpenGL ES程序可执行文件
-        GLES20.glLinkProgram(program)
-        //-----------------------------------------end
     }
 
     fun draw() {

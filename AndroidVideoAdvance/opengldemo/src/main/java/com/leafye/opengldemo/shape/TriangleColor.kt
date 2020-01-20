@@ -4,20 +4,20 @@ import android.opengl.GLES20
 import com.leafye.opengldemo.utils.OpenGLUtils
 import java.nio.FloatBuffer
 
-class Triangle : BaseShape() {
-
+class TriangleColor : BaseShape() {
 
     private val vertexBuffer: FloatBuffer by lazy{
         OpenGLUtils.floatBufferUtil(triangleCoords)
     }
-
+    private val colorBuffer: FloatBuffer by lazy{
+        OpenGLUtils.floatBufferUtil(colorArr)
+    }
 
     private val vertexCount = triangleCoords.size / COORDS_PER_VERTEX
     private val vertexStride = COORDS_PER_VERTEX * 4
 
     private var positionHandle: Int = 0
-    private var colorHandle: Int = 0
-
+    private var colorHandleA: Int = 0
 
     companion object {
         // number of coordinates per vertex in this array
@@ -25,13 +25,16 @@ class Triangle : BaseShape() {
 
         const val vertexShaderCode =
             "attribute vec4 vPosition;" +
+                    "varying vec4 vColor;" +
+                    "attribute vec4 aColor;" +
                     "void main(){" +
                     " gl_Position = vPosition;" +
+                    " vColor=aColor;" +
                     "}"
 
         const val fragmentShaderCode =
             "precision mediump float;" +
-                    "uniform vec4 vColor;" +
+                    "varying vec4 vColor;" +
                     "void main(){" +
                     " gl_FragColor = vColor;" +
                     "}"
@@ -42,18 +45,27 @@ class Triangle : BaseShape() {
             -0.5f, -0.5f, 0.0f, // bottom left
             0.5f, -0.5f, 0.0f  // bottom right
         )
-    }
 
-    // Set color with red, green, blue and alpha (opacity) values
-    private val colorArr = floatArrayOf(255F, 0F, 0F, 1.0F)
+        // Set color with red, green, blue and alpha (opacity) values
+        @JvmStatic
+        private val colorArr = floatArrayOf(
+            1F, 0F, 0F, 1F,
+            0f, 1f, 0f, 1f,
+            0f, 0f, 1f, 1f
+        )
+    }
 
     override fun initOpenGLParam(): MutableList<Int> {
-        //把要执行的代码片段放入OpenGL中,并获取int(key)
-        val vertexShader = OpenGLUtils.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
-        val fragmentShader = OpenGLUtils.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
-        return mutableListOf<Int>(vertexShader, fragmentShader)
+        val vertexShader = OpenGLUtils.loadShader(
+            GLES20.GL_VERTEX_SHADER,
+            vertexShaderCode
+        )
+        val fragmentShader = OpenGLUtils.loadShader(
+            GLES20.GL_FRAGMENT_SHADER,
+            fragmentShaderCode
+        )
+        return mutableListOf(vertexShader, fragmentShader)
     }
-
 
     fun draw() {
         //将程序添加到OpenGL ES环境
@@ -73,13 +85,20 @@ class Triangle : BaseShape() {
         )
 
         //获取片段着色器的颜色句柄
-        colorHandle = GLES20.glGetUniformLocation(program, "vColor")
+        colorHandleA = GLES20.glGetAttribLocation(program, "aColor")
         //设置绘制三角形的颜色
-        GLES20.glUniform4fv(colorHandle, 1, colorArr, 0)
+        GLES20.glEnableVertexAttribArray(colorHandleA)
+        GLES20.glVertexAttribPointer(
+            colorHandleA,
+            4,
+            GLES20.GL_FLOAT,
+            false,
+            0,
+            colorBuffer
+        )
         //绘制三角形
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount)
         //禁用顶点数组
         GLES20.glDisableVertexAttribArray(positionHandle)
     }
-
 }

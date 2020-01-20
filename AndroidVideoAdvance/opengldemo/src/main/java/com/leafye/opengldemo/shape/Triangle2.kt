@@ -4,12 +4,14 @@ import android.opengl.GLES20.*
 import com.leafye.opengldemo.utils.OpenGLUtils
 import java.nio.FloatBuffer
 
-class Triangle2 {
+class Triangle2 :BaseShape(){
 
-    private var vertexBuffer: FloatBuffer? = null
-    private var vertexBuffer2: FloatBuffer? = null
-
-    private val program: Int
+    private val vertexBuffer: FloatBuffer by lazy {
+        OpenGLUtils.floatBufferUtil(triangleCoords)
+    }
+    private val vertexBuffer2: FloatBuffer by lazy{
+        OpenGLUtils.floatBufferUtil(triangleCoords2)
+    }
 
     private val vertexCount = triangleCoords.size / COORDS_PER_VERTEX
     private val vertexStride = COORDS_PER_VERTEX * 4
@@ -56,19 +58,13 @@ class Triangle2 {
     private val colorArr = floatArrayOf(255F, 0F, 0F, 1.0F)
     private val colorArr2 = floatArrayOf(0F, 225F, 0F, 1.0F)
 
-    init {
-        vertexBuffer = OpenGLUtils.floatBufferUtil(triangleCoords)
-        vertexBuffer2 = OpenGLUtils.floatBufferUtil(triangleCoords2)
+    override fun initOpenGLParam(): MutableList<Int> {
         //把要执行的代码片段放入OpenGL中,并获取int(key)
         val vertexShader = OpenGLUtils.loadShader(GL_VERTEX_SHADER, vertexShaderCode)
         val fragmentShader = OpenGLUtils.loadShader(GL_FRAGMENT_SHADER, fragmentShaderCode)
-        //创建空的OpenGL ES程序
-        program = glCreateProgram()
-        glAttachShader(program, vertexShader)
-        glAttachShader(program, fragmentShader)
-        //创建OpenGL ES程序可执行文件
-        glLinkProgram(program)
+        return mutableListOf(vertexShader,fragmentShader)
     }
+
 
     fun draw(mvpMatrix: FloatArray) {
         //将程序添加到OpenGL ES环境

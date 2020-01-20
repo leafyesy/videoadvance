@@ -1,8 +1,9 @@
-package com.leafye.opengldemo.glproxy
+package com.leafye.opengldemo.glproxy.shape
 
 import android.opengl.GLES20
 import android.opengl.Matrix
 import android.os.SystemClock
+import com.leafye.opengldemo.glproxy.GLTest
 import com.leafye.opengldemo.shape.Triangle2
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10

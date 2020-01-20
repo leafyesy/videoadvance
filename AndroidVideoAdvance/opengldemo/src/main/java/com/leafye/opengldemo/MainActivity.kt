@@ -2,17 +2,12 @@ package com.leafye.opengldemo
 
 import android.app.ActivityManager
 import android.content.Context
-import android.opengl.EGL14
-import android.opengl.GLES10
-import android.opengl.GLES10.GL_COLOR_BUFFER_BIT
 import android.opengl.GLSurfaceView
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import com.leafye.opengldemo.glproxy.*
-import com.leafye.opengldemo.shape.Triangle
+import com.leafye.opengldemo.glproxy.shape.TriangleColorTest
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -27,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val glTest: GLTest by lazy { Triangle2Test() }
+    private val glTest: GLTest by lazy { TriangleColorTest() }
 
     private val renderer by lazy {
         object : GLSurfaceView.Renderer {
