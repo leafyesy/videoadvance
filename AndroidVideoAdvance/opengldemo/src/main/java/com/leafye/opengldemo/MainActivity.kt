@@ -3,12 +3,19 @@ package com.leafye.opengldemo
 import android.app.ActivityManager
 import android.content.Context
 import android.opengl.EGL14
+import android.opengl.GLES10
 import android.opengl.GLES10.GL_COLOR_BUFFER_BIT
 import android.opengl.GLSurfaceView
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
+import com.leafye.opengldemo.glproxy.EmptyRedTest
+import com.leafye.opengldemo.glproxy.GLTest
+import com.leafye.opengldemo.glproxy.SquareTest
+import com.leafye.opengldemo.glproxy.TriangleTest
+import com.leafye.opengldemo.shape.Triangle
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -23,19 +30,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val glTest: GLTest by lazy { SquareTest() }
+
     private val renderer by lazy {
         object : GLSurfaceView.Renderer {
-            override fun onDrawFrame(gl: GL10?) {
-                gl?.glClear(GL_COLOR_BUFFER_BIT)
+
+            override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+                glTest.onSurfaceCreatedTest(gl, config)
             }
 
             override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
-                gl?.glViewport(0, 0, width, height)
+                glTest.onSurfaceChangedTest(gl, width, height)
             }
 
-            override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-                //红色表示
-                gl?.glClearColor(1.0F, 0.0F, 0.0F, 0.0F)
+            override fun onDrawFrame(gl: GL10?) {
+                glTest.onDrawFrameTest(gl)
             }
         }
     }
@@ -72,9 +81,6 @@ class MainActivity : AppCompatActivity() {
         //按请求刷新
         //glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
         //---mode end----------------------------------------------------------
-
-
-
         isRenderer = true
     }
 
