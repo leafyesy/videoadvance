@@ -11,10 +11,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
-import com.leafye.opengldemo.glproxy.EmptyRedTest
-import com.leafye.opengldemo.glproxy.GLTest
-import com.leafye.opengldemo.glproxy.SquareTest
-import com.leafye.opengldemo.glproxy.TriangleTest
+import com.leafye.opengldemo.glproxy.*
 import com.leafye.opengldemo.shape.Triangle
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.microedition.khronos.egl.EGLConfig
@@ -30,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val glTest: GLTest by lazy { SquareTest() }
+    private val glTest: GLTest by lazy { Triangle2Test() }
 
     private val renderer by lazy {
         object : GLSurfaceView.Renderer {
@@ -77,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         glSurfaceView.setRenderer(renderer)
         //---mode start-----------------------------------------------------------
         //连续不断的刷新
-        //glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
+        glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
         //按请求刷新
         //glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
         //---mode end----------------------------------------------------------

@@ -27,6 +27,17 @@ class Triangle {
                     " gl_Position = vPosition;" +
                     "}"
 
+        // private final String vertexShaderCode =
+        // "uniform mat4 uMVPMatrix;" +
+        // "attribute vec4 vPosition;" +
+        // "void main() {" +
+        // the matrix must be included as a modifier of gl_Position
+        // Note that the uMVPMatrix factor *must be first* in order
+        // for the matrix multiplication product to be correct.
+        // "  gl_Position = uMVPMatrix * vPosition;" +        "}";
+        // Use to access and set the view transformation
+        // private int mMVPMatrixHandle;
+
         const val fragmentShaderCode =
             "precision mediump float;" +
                     "uniform vec4 vColor;" +
