@@ -10,6 +10,7 @@ import com.leafye.audiorecorddemo.linxi.handler.AbstractHandler
 import com.leafye.audiorecorddemo.linxi.handler.AudioDataIdentifyHandler
 import com.leafye.audiorecorddemo.linxi.handler.AuthenticationHandler
 import com.leafye.audiorecorddemo.linxi.handler.LoggerHandler
+import com.leafye.audiorecorddemo.tanslate.TranslateManager
 import okhttp3.*
 import okio.ByteString
 import org.json.JSONException
@@ -238,6 +239,7 @@ object LinxiWebSocket {
             is AudioDataIdentifyHandler -> {
                 if (result is Content) {
                     notifyParseResult(result)//处理音频处理结果
+                    TranslateManager.translate(result.getResultStr(), "1")
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.leafye.audiorecorddemo.linxi
 
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.experimental.and
@@ -25,7 +26,7 @@ class LinxiEncoder {
                 put("samples", jsonArray)
             }
         //val toJson = gson.toJson(RequestData(if (isFinishFrame) 4 else 2, byteArr, snumber, sid))
-        //Log.d(TAG, "encode:$apply")
+        Log.d(TAG, "encode:$apply")
         return apply.toString()
     }
 

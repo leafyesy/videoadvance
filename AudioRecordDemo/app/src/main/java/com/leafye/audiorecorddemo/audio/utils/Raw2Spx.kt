@@ -2,13 +2,14 @@ package com.leafye.audiorecorddemo.audio.utils
 
 import android.util.Log
 import com.leafye.audiorecorddemo.audio.utils.ShortAndByte.byteArray2ShortArray
+import com.leafye.speex.SpeexUtil
 import com.sixin.speex.Speex
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
 class Raw2Spx {
 
-    private val speex by lazy { Speex() }
+    private val speex by lazy { SpeexUtil() }
 
     fun raw2spx(inFileName: String, outFileName: String) {
         var rawFileInputStream: FileInputStream? = null
@@ -41,6 +42,38 @@ class Raw2Spx {
             Log.e("test", e.toString())
         }
 
+    }
+
+
+    fun spx2raw(inFileName: String, outFileName: String) {
+        var inAccessFile: FileInputStream? = null
+        var fileOutputStream: FileOutputStream? = null
+        try {
+            inAccessFile = FileInputStream(inFileName)
+            fileOutputStream = FileOutputStream(outFileName)
+            val inbyte = ByteArray(20)
+            val decoded = ShortArray(160)
+            var readsize = 0
+            var readedtotal = 0
+            var decsize = 0
+            var decodetotal = 0
+            readsize = inAccessFile.read(inbyte, 0, 20)
+            while (readsize != -1) {
+                readedtotal += readsize
+                decsize = speex.decode(inbyte, decoded, readsize)
+                fileOutputStream.write(ShortAndByte.shortArray2ByteArray(decoded), 0, decsize * 2)
+                decodetotal += decsize
+                Log.e(
+                    "test",
+                    "readsize $readsize\n readedtotal$readedtotal\n decsize$decsize\n decodetotal$decodetotal"
+                )
+                readsize = inAccessFile.read(inbyte, 0, 20)
+            }
+            fileOutputStream.close()
+            inAccessFile.close()
+        } catch (e: Exception) {
+            Log.e("test", e.toString())
+        }
     }
 
 }
