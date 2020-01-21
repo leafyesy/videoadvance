@@ -16,6 +16,11 @@ abstract class BaseShape {
         }
         //创建OpenGL ES程序可执行文件
         GLES20.glLinkProgram(program)
+        initData()
+    }
+
+    open fun initData() {
+
     }
 
     abstract fun initOpenGLParam():MutableList<Int>

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leafye.opengldemo.R
+import com.leafye.opengldemo.glproxy.shape.GLBitmapTest
 import com.leafye.opengldemo.glproxy.shape.TriangleColorTest
 import kotlinx.android.synthetic.main.activity_shape.*
 import javax.microedition.khronos.egl.EGLConfig
@@ -29,7 +30,7 @@ class ShapeActivity : AppCompatActivity() {
         }
     }
 
-    private val glTest: GLTest by lazy { TriangleColorTest() }
+    private val glTest: GLTest by lazy { GLBitmapTest(this) }
 
     private val renderer by lazy {
         object : GLSurfaceView.Renderer {
@@ -74,6 +75,7 @@ class ShapeActivity : AppCompatActivity() {
         //设置客户端为opengl 2 版本
         glSurfaceView.setEGLContextClientVersion(2)
         glSurfaceView.setRenderer(renderer)
+        glSurfaceView.alpha
         //---mode start-----------------------------------------------------------
         //连续不断的刷新
         glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
