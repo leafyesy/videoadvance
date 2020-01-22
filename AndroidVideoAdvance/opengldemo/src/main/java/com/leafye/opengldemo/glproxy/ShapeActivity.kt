@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leafye.opengldemo.R
 import com.leafye.opengldemo.glproxy.shape.GLBitmapTest
+import com.leafye.opengldemo.glproxy.shape.TriangleColor2Test
 import com.leafye.opengldemo.glproxy.shape.TriangleColorTest
 import kotlinx.android.synthetic.main.activity_shape.*
 import javax.microedition.khronos.egl.EGLConfig
@@ -30,7 +31,7 @@ class ShapeActivity : AppCompatActivity() {
         }
     }
 
-    private val glTest: GLTest by lazy { GLBitmapTest(this) }
+    private val glTest: GLTest by lazy { TriangleColor2Test() }
 
     private val renderer by lazy {
         object : GLSurfaceView.Renderer {

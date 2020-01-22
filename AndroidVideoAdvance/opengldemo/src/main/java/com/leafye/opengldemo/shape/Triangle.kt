@@ -60,6 +60,9 @@ class Triangle : BaseShape() {
         GLES20.glUseProgram(program)
         //获取顶点着色器的位置的句柄
         positionHandle = GLES20.glGetAttribLocation(program, "vPosition")
+        //获取片段着色器的颜色句柄
+        colorHandle = GLES20.glGetUniformLocation(program, "vColor")
+
         //启用三角形顶点位置的句柄
         GLES20.glEnableVertexAttribArray(positionHandle)
         //准备三角形坐标数据
@@ -72,8 +75,6 @@ class Triangle : BaseShape() {
             vertexBuffer
         )
 
-        //获取片段着色器的颜色句柄
-        colorHandle = GLES20.glGetUniformLocation(program, "vColor")
         //设置绘制三角形的颜色
         GLES20.glUniform4fv(colorHandle, 1, colorArr, 0)
         //绘制三角形
