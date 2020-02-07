@@ -1,11 +1,20 @@
 package com.leafye.opengldemo.utils
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.opengl.GLUtils
 import android.opengl.Matrix
+import android.text.TextUtils
 import android.util.Log
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.nio.*
+import javax.microedition.khronos.opengles.GL10
+
 
 class OpenGLUtils {
 
@@ -145,6 +154,36 @@ class OpenGLUtils {
             return textureHandles[0]
         }
 
+
+        fun createOESTextureObject(): Int {
+            val tex = IntArray(1)
+            //生成一个纹理
+            GLES20.glGenTextures(1, tex, 0)
+            //将此纹理绑定到外部纹理上
+            GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, tex[0])
+            //设置纹理过滤参数
+            GLES20.glTexParameteri(
+                GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+                GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST
+            )
+            GLES20.glTexParameteri(
+                GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+                GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR
+            )
+            GLES20.glTexParameteri(
+                GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+                GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE
+            )
+            GLES20.glTexParameteri(
+                GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+                GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE
+            )
+            //解除纹理绑定
+            GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0)
+            return tex[0]
+        }
+
+
         private fun checkGlError(op: String) {
             val error = GLES20.glGetError()
             if (error != GLES20.GL_NO_ERROR) {
@@ -152,6 +191,37 @@ class OpenGLUtils {
                 Log.e(TAG, "checkGlError: $msg")
             }
         }
+
+        fun readShaderFromResource(context: Context, resourceId: Int): String {
+            val builder = StringBuilder()
+            var `is`: InputStream? = null
+            var isr: InputStreamReader? = null
+            var br: BufferedReader? = null
+            try {
+                `is` = context.resources.openRawResource(resourceId)
+                isr = InputStreamReader(`is`)
+                br = BufferedReader(isr)
+                var line: String? = br.readLine()
+                while (!TextUtils.isEmpty(line)) {
+                    builder.append(line + "\n")
+                    line = br.readLine()
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
+                try {
+                    `is`?.close()
+                    isr?.close()
+                    br?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            return builder.toString().also {
+                Log.d(TAG, it)
+            }
+        }
+
     }
 
 }

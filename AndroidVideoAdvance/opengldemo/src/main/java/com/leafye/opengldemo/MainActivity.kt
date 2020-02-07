@@ -3,6 +3,7 @@ package com.leafye.opengldemo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.leafye.opengldemo.glproxy.ShapeActivity
+import com.leafye.opengldemo.recordCamera.GLCameraActivity
 import com.leafye.opengldemo.recordCamera.RecordCameraActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,6 +17,9 @@ class MainActivity : AppCompatActivity() {
         }
         recordBtn.setOnClickListener {
             RecordCameraActivity.startActivity(this)
+        }
+        glCameraBtn.setOnClickListener {
+            GLCameraActivity.start(this)
         }
     }
 }

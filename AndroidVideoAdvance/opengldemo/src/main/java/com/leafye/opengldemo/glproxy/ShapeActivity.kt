@@ -1,6 +1,5 @@
 package com.leafye.opengldemo.glproxy
 
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.opengl.GLSurfaceView
@@ -9,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leafye.opengldemo.R
 import com.leafye.opengldemo.glproxy.shape.GLBitmapTest
-import com.leafye.opengldemo.glproxy.shape.TriangleColorTest
+import com.leafye.opengldemo.view.YeGLSurfaceView
 import kotlinx.android.synthetic.main.activity_shape.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -24,8 +23,8 @@ class ShapeActivity : AppCompatActivity() {
 
     private var isRenderer: Boolean = false
 
-    private val glSurfaceView: GLSurfaceView by lazy {
-        GLSurfaceView(this).also {
+    private val glSurfaceView: YeGLSurfaceView by lazy {
+        YeGLSurfaceView(this).also {
             glContainer.addView(it)
         }
     }
@@ -52,28 +51,16 @@ class ShapeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shape)
-        if (checkOpenGl2()) {
+        if (YeGLSurfaceView.checkOpenGl2(this)) {
             startGl()
         } else {
             Toast.makeText(this, "不支持OpenGL2", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun checkOpenGl2(): Boolean {
-        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val configurationInfo = activityManager.deviceConfigurationInfo
-        return configurationInfo.reqGlEsVersion >= 0x20000
-//                || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1
-//                && (Build.FINGERPRINT.startsWith("generic")
-//                || Build.FINGERPRINT.startsWith("unknown")
-//                || Build.MODEL.contains("google_sdk")
-//                || Build.MODEL.contains("Emulator")
-//                || Build.MODEL.contains("Android SDK built for x86")))//支持模拟器
-    }
-
     private fun startGl() {
         //设置客户端为opengl 2 版本
-        glSurfaceView.setEGLContextClientVersion(2)
+        glSurfaceView.setVersion2()
         glSurfaceView.setRenderer(renderer)
         glSurfaceView.alpha
         //---mode start-----------------------------------------------------------
