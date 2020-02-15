@@ -6,15 +6,16 @@ import android.opengl.GLES20
 import android.opengl.GLES20.*
 import com.leafye.opengldemo.R
 import com.leafye.opengldemo.utils.OpenGLUtils
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
 
 /**
  * Created by leafye on 2020-02-05.
  */
-class FilterEngine(OESTextureId: Int, private val mContext: Context) {
+class FilterEngine(
+    OESTextureId: Int,
+    context: Context
+) {
     val buffer: FloatBuffer
     var oesTextureId = -1
     private var vertexShader = -1
@@ -29,34 +30,16 @@ class FilterEngine(OESTextureId: Int, private val mContext: Context) {
 
     init {
         oesTextureId = OESTextureId
-        buffer = createBuffer(vertexData)
-        vertexShader = loadShader(
+        buffer = OpenGLUtils.floatBufferUtil(vertexData)
+        vertexShader = OpenGLUtils.loadShader(
             GL_VERTEX_SHADER,
-            OpenGLUtils.readShaderFromResource(mContext, R.raw.camera1_vertex_shader)
+            OpenGLUtils.readShaderFromResource(context, R.raw.camera1_vertex_shader)
         )
-        fragmentShader = loadShader(
+        fragmentShader = OpenGLUtils.loadShader(
             GL_FRAGMENT_SHADER,
-            OpenGLUtils.readShaderFromResource(mContext, R.raw.camera1_fragment_shader)
+            OpenGLUtils.readShaderFromResource(context, R.raw.camera1_fragment_shader)
         )
         shaderProgram = linkProgram(vertexShader, fragmentShader)
-    }
-
-    fun createBuffer(vertexData: FloatArray): FloatBuffer {
-        val buffer = ByteBuffer.allocateDirect(vertexData.size * 4)
-            .order(ByteOrder.nativeOrder())
-            .asFloatBuffer()
-        buffer.put(vertexData, 0, vertexData.size).position(0)
-        return buffer
-    }
-
-    fun loadShader(type: Int, shaderSource: String): Int {
-        val shader = glCreateShader(type)
-        if (shader == 0) {
-            throw RuntimeException("Create Shader Failed!" + glGetError())
-        }
-        glShaderSource(shader, shaderSource)
-        glCompileShader(shader)
-        return shader
     }
 
     fun linkProgram(verShader: Int, fragShader: Int): Int {
@@ -67,7 +50,6 @@ class FilterEngine(OESTextureId: Int, private val mContext: Context) {
         glAttachShader(program, verShader)
         glAttachShader(program, fragShader)
         glLinkProgram(program)
-
         glUseProgram(program)
         return program
     }

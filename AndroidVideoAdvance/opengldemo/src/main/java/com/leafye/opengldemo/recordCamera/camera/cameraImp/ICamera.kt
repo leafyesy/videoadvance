@@ -1,4 +1,4 @@
-package com.leafye.opengldemo.recordCamera.camera
+package com.leafye.opengldemo.recordCamera.camera.cameraImp
 
 import android.graphics.SurfaceTexture
 
@@ -7,11 +7,9 @@ import android.graphics.SurfaceTexture
  */
 interface ICamera {
 
-    fun setHolder(holder: IHolder)
+    fun getCameraId(id: CameraId): String
 
-    fun getCameraId(id: CameraId): Int
-
-    fun openCamera(cameraId: Int): Boolean
+    fun openCamera(cameraId: String): Boolean
 
     fun startPreview()
 

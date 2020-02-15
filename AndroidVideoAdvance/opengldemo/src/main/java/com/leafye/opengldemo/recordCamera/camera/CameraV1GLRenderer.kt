@@ -3,11 +3,10 @@ package com.leafye.opengldemo.recordCamera.camera
 import android.content.Context
 import android.graphics.SurfaceTexture
 import android.opengl.GLES11Ext
-import android.opengl.GLES20
 import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
 import android.util.Log
-import com.leafye.opengldemo.recordCamera.camera.cameraImp.CameraV1GLSurfaceView
+import com.leafye.opengldemo.recordCamera.camera.cameraImp.ICamera
 import com.leafye.opengldemo.utils.OpenGLUtils
 import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
@@ -79,9 +78,8 @@ class CameraV1GLRenderer(
             it.updateTexImage()
             it.getTransformMatrix(transformMatrix)
         }
-        //glClear(GL_COLOR_BUFFER_BIT)
-        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
         aPositionLocation = glGetAttribLocation(mShaderProgram, FilterEngine.POSITION_ATTRIBUTE)
         aTextureCoordLocation =
@@ -91,7 +89,7 @@ class CameraV1GLRenderer(
         uTextureSamplerLocation =
             glGetUniformLocation(mShaderProgram, FilterEngine.TEXTURE_SAMPLER_UNIFORM)
 
-        glActiveTexture(GLES20.GL_TEXTURE0)
+        glActiveTexture(GL_TEXTURE0)
         glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId)
         glUniform1i(uTextureSamplerLocation, 0)
         glUniformMatrix4fv(uTextureMatrixLocation, 1, false, transformMatrix, 0)
@@ -114,7 +112,7 @@ class CameraV1GLRenderer(
         Log.i(TAG, "onDrawFrame: time: $t")
     }
 
-    fun initSurfaceTexture(): Boolean {
+    private fun initSurfaceTexture(): Boolean {
         if (mCamera == null || mGLSurfaceView == null) {
             Log.w(TAG, "mCamera:$mCamera  or mGLSurfaceView:$mGLSurfaceView!")
             return false
@@ -126,7 +124,6 @@ class CameraV1GLRenderer(
         mSurfaceTexture = SurfaceTexture(mOESTextureId)
             .apply {
                 setOnFrameAvailableListener {
-                    Log.d(TAG, "setOnFrameAvailableListener->requestRender")
                     glSurfaceView.requestRender()
                 }
                 iCamera.setPreviewTexture(this)

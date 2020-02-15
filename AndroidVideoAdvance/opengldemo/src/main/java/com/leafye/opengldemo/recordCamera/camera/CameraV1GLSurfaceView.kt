@@ -1,9 +1,8 @@
-package com.leafye.opengldemo.recordCamera.camera.cameraImp
+package com.leafye.opengldemo.recordCamera.camera
 
 import android.content.Context
 import android.opengl.GLSurfaceView
-import com.leafye.opengldemo.recordCamera.camera.CameraV1GLRenderer
-import com.leafye.opengldemo.recordCamera.camera.ICamera
+import com.leafye.opengldemo.recordCamera.camera.cameraImp.ICamera
 
 
 /**

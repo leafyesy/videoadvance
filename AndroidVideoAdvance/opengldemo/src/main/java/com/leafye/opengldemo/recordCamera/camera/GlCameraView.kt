@@ -9,8 +9,8 @@ import android.view.SurfaceHolder
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.leafye.opengldemo.R
-import com.leafye.opengldemo.recordCamera.camera.cameraImp.Camera1Imp
-import com.leafye.opengldemo.recordCamera.camera.cameraImp.CameraV1GLSurfaceView
+import com.leafye.opengldemo.recordCamera.camera.cameraImp.Camera2Imp
+import com.leafye.opengldemo.recordCamera.camera.cameraImp.ICamera
 import kotlinx.android.synthetic.main.view_gl_camera.view.*
 
 /**
@@ -54,13 +54,15 @@ class GlCameraView(context: Context, set: AttributeSet? = null) :
             Log.w(TAG, "camera已经初始化!!!")
             return
         }
-        camera = Camera1Imp(context as Activity).apply camera@{
+        camera = Camera2Imp(context as Activity).apply camera@{
             val cameraId = getCameraId(ICamera.CameraId.BACK)
             if (!openCamera(cameraId)) {
                 Log.e(TAG, "相机启动失败")
                 return
             }
-            glSurfaceViewCamera = CameraV1GLSurfaceView(context).apply glView@{
+            glSurfaceViewCamera = CameraV1GLSurfaceView(
+                context
+            ).apply glView@{
                 this@GlCameraView.glSurfaceViewContainer.removeAllViews()
                 this@GlCameraView.glSurfaceViewContainer.addView(this@glView)
                 init(this@camera, true, context)
