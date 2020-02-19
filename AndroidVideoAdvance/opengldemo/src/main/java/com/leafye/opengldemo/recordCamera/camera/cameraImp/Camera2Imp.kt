@@ -203,6 +203,9 @@ class Camera2Imp(private val activity: Activity) : ICamera {
     }
 
     override fun release() {
-
+        cameraCaptureSession?.close()
+        cameraCaptureSession = null
+        cameraDevice?.close()
+        cameraDevice = null
     }
 }
