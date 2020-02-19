@@ -18,7 +18,6 @@ import javax.microedition.khronos.opengles.GL10
 
 class OpenGLUtils {
 
-
     companion object {
 
         private const val TAG = "OpenGLUtils"
@@ -65,13 +64,50 @@ class OpenGLUtils {
          * @param type
          * 顶点着色器:GLES20.GL_VERTEX_SHADER
          * 片段着色器:GLES20.GL_FRAGMENT_SHADER
+         * return shaderId 如果为0 表示加载失败
          */
         fun loadShader(type: Int, shaderCode: String): Int {
+            //创建一个着色器
             val shader = GLES20.glCreateShader(type)
-            //添加着色器代码 并 编译
-            GLES20.glShaderSource(shader, shaderCode)
-            GLES20.glCompileShader(shader)
-            return shader
+            if (shader != 0) {
+                //添加着色器代码
+                GLES20.glShaderSource(shader, shaderCode)
+                //编译着色器
+                GLES20.glCompileShader(shader)
+                //检查着色器状态
+                val compilerStatusArr = IntArray(1)
+                GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compilerStatusArr, 0);
+                if (compilerStatusArr[0] == 0) {
+                    val infoLog = GLES20.glGetShaderInfoLog(shader)
+                    Log.w(TAG, "loadShader failure:$infoLog")
+                    GLES20.glDeleteShader(shader)
+                    return 0
+                }
+                return shader
+            }
+            Log.w(TAG, "create shader failure")
+            return 0
+        }
+
+        fun linkProgram(shaderIdList: MutableList<Int>): Int {
+            val program = GLES20.glCreateProgram()
+            if (program != 0) {
+                shaderIdList.forEach {
+                    GLES20.glAttachShader(program, it)
+                }
+                GLES20.glLinkProgram(program)
+                val linkStatus = IntArray(1)
+                GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, linkStatus, 0)
+                if (linkStatus[0] == 0) {
+                    val logInfo = GLES20.glGetProgramInfoLog(program)
+                    Log.w(TAG, "linkStatus:${linkStatus[0]}  info:$logInfo")
+                    GLES20.glDeleteProgram(program)
+                    return 0
+                }
+                return program
+            }
+            Log.w(TAG, "create program failure")
+            return 0
         }
 
         fun changeMvpMatrixInside(
@@ -150,7 +186,7 @@ class OpenGLUtils {
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bmp, 0)
             // 生成 MIP 贴图
             GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D)
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0)
+            //GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0)
             return textureHandles[0]
         }
 

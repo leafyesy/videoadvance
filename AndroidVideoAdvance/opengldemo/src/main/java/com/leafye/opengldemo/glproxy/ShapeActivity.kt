@@ -8,7 +8,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leafye.opengldemo.R
 import com.leafye.opengldemo.glproxy.shape.GLBitmapTest
+<<<<<<< HEAD
 import com.leafye.opengldemo.view.YeGLSurfaceView
+=======
+import com.leafye.opengldemo.glproxy.shape.TriangleColor2Test
+import com.leafye.opengldemo.glproxy.shape.TriangleColorTest
+>>>>>>> 7e188107107d020148418f5c6514915c2e752a72
 import kotlinx.android.synthetic.main.activity_shape.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -29,7 +34,7 @@ class ShapeActivity : AppCompatActivity() {
         }
     }
 
-    private val glTest: GLTest by lazy { GLBitmapTest(this) }
+    private val glTest: GLTest by lazy { TriangleColor2Test() }
 
     private val renderer by lazy {
         object : GLSurfaceView.Renderer {
