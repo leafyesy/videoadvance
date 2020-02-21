@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnProtocol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PROTOCOL"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btnFormat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FORMAT"
+        app:layout_constraintLeft_toRightOf="@+id/btnProtocol"
+        app:layout_constraintRight_toRightOf="@+id/btnCodec"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnCodec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CODEC"
+        app:layout_constraintLeft_toRightOf="@+id/btnFormat"
+        app:layout_constraintRight_toLeftOf="@+id/btnFilter"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FILTER"
+        app:layout_constraintLeft_toRightOf="@+id/btnCodec"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
