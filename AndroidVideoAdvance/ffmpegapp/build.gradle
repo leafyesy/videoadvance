@@ -17,8 +17,8 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags "-frtti -fexceptions"
-                abiFilters "armeabi-v7a" // 控制编译出哪些abi文件，使用者需要和提供者保持一致
+                cppFlags "-frtti -fexceptions -std=c++11"
+                abiFilters "arm64-v8a" // 控制编译出哪些abi文件，使用者需要和提供者保持一致
             }
         }
     }
@@ -33,6 +33,7 @@ android {
     externalNativeBuild{
         cmake{
             path "CMakeLists.txt"
+            version "3.10.2"
         }
     }
 
