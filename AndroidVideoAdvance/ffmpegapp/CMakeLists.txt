@@ -1,18 +1,46 @@
-cmake_minimum_required(VERSION 3.10.2)#版本
-find_library(log-lib log)
-include_directories(libs/include)#加载头文件
-set(DIR ${CMAKE_SOURCE_DIR}/../../../../libs)#CMAKE_SOURCE_DIR为CmakeList.txt所在的位置
-set(FFMPEG_DIR ${CMAKE_SOURCE_DIR}/../../../../src/main/jni/include)
-add_library(avcodec SHARED IMPORTED)
-set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${DIR}/arm64-v8a/libavcodec.so)
+# For more information about using CMake with Android Studio, read the
+# documentation: https://d.android.com/studio/projects/add-native-code.html
 
-add_library(avfilter SHARE IMPORTED)
-set_target_properties(avfilter PROPERTIES IMPORTED_LOCATION ${DIR}/arm64-v8a/libavfilter.so)
+# Sets the minimum version of CMake required to build the native library.
 
-add_library(avformat SHARE IMPORTED)
-set_target_properties(avformat PROPERTIES IMPORTED_LOCATION ${DIR}/arm64-v8a/libavformat.so)
+cmake_minimum_required(VERSION 3.4.1)
 
-add_library(avutil SHARE IMPORTED)
-set_target_properties(avutil PROPERTIES IMPORTED_LOCATION ${DIR}/arm64-v8a/libavutil.so)
+# Creates and names a library, sets it as either STATIC
+# or SHARED, and provides the relative paths to its source code.
+# You can define multiple libraries, and CMake builds them for you.
+# Gradle automatically packages shared libraries with your APK.
 
-target_link_libraries(avcodec avfilter avformat avutil ${log-lib})
+add_library( avcodec
+             SHARED
+             IMPORTED )
+set_target_properties( avcodec
+                       PROPERTIES IMPORTED_LOCATION
+                       ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/armeabi-v7a}/libavcodec.so )
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/main/jni/include)
+
+#4.设置第三方库头库所在位置
+# link_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/)
+#
+# message("path:" ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/)
+
+#5.对应的库
+# link_libraries(libavcodec.so)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+
+# find_library( # Sets the name of the path variable.
+#               log-lib
+#               log )
+
+target_link_libraries( # Specifies the target library.
+                     avcodec
+                       #mp3lame
+                       #ffmpeg
+                       #-landroid #native_window
+                       #-ljnigraphics #bitmap
+                       #-lOpenSLES #openSLES
+                       # Links the target library to the log library
+                       # included in the NDK.
+                       #${log-lib}
+                     )
