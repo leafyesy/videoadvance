@@ -17,7 +17,7 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags "-frtti -fexceptions -std=c++11"
+                cppFlags ""//-frtti -fexceptions -std=c++11
                 abiFilters "arm64-v8a" // 控制编译出哪些abi文件，使用者需要和提供者保持一致
             }
         }
@@ -33,11 +33,16 @@ android {
     externalNativeBuild{
         cmake{
             path "CMakeLists.txt"
-            version "3.10.2"
+            //version "3.10.2"
         }
     }
 
-    sourceSets { main { jni.srcDirs = ['src/main/jni', 'src/main/jni/'] } }
+//    sourceSets {
+//        main {
+//            jni.srcDirs = ['src/main/jni']
+//            jniLibs.srcDirs = ['libs']
+//        }
+//    }
 }
 
 dependencies {
