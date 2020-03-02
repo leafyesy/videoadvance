@@ -13,6 +13,11 @@ package com.leafye.ffmpegapp;
  */
 public class YeFFmpeg {
 
+    static {
+        System.loadLibrary("ffmpeg");
+        System.loadLibrary("yeffmpeg");
+    }
+
     public native void decode(String input, String output);
 
     public native String avfilterinfo();

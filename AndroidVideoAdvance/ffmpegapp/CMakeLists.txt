@@ -20,10 +20,13 @@ add_library(yeffmpeg SHARED ${DIR}/src/main/cpp/com_leafye_ffmpegapp_YeFFmpeg.cp
 #add_library(avfilter SHARED IMPORTED)
 #set_target_properties(avfilter PROPERTIES IMPORTED_LOCATION ${FFMPEG_SO_DIR}/arm64-v8a/libavfilter.so)
 #
+add_library(avffmpeg SHARED IMPORTED)
+set_target_properties(avffmpeg PROPERTIES IMPORTED_LOCATION ${FFMPEG_SO_DIR}/arm64-v8a/libffmpeg.so)
+
 add_library(avformat SHARED IMPORTED)
 set_target_properties(avformat PROPERTIES IMPORTED_LOCATION ${FFMPEG_SO_DIR}/arm64-v8a/libavformat.so)
 #
 #add_library(avutil SHARED IMPORTED)
 #set_target_properties(avutil PROPERTIES IMPORTED_LOCATION ${FFMPEG_SO_DIR}/arm64-v8a/libavutil.so)
 
-target_link_libraries(yeffmpeg ${log-lib})#avcodec avfilter avformat avutil
+target_link_libraries(yeffmpeg avffmpeg ${log-lib})#avcodec avfilter avformat avutil
