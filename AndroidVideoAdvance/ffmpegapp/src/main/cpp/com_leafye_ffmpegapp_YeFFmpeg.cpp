@@ -139,8 +139,7 @@ Java_com_leafye_ffmpegapp_YeFFmpeg_avfilterinfo(
         sprintf(info, "%s%s\n", info, f_temp->name);
         f_temp = f_temp->next;
     }
-    return env->NewStringUTF("hello world!");
-
+    return env->NewStringUTF(info);
 }
 
 extern "C"
@@ -172,7 +171,7 @@ Java_com_leafye_ffmpegapp_YeFFmpeg_avcodecinfo(
         sprintf(info, "%s[%10s]\n", info, c_temp->name);
         c_temp = c_temp->next;
     }
-    return env->NewStringUTF("hello world");
+    return env->NewStringUTF(info);
 }
 
 extern "C"
@@ -192,7 +191,7 @@ Java_com_leafye_ffmpegapp_YeFFmpeg_avformatinfo(
         sprintf(info, "%sOutput: %s\n", info, of_temp->name);
         of_temp = of_temp->next;
     }
-    return env->NewStringUTF("hello world");
+    return env->NewStringUTF(info);
 }
 
 extern "C"
@@ -214,5 +213,5 @@ Java_com_leafye_ffmpegapp_YeFFmpeg_urlprotocolinfo(
     while ((*p_temp) != NULL) {
         sprintf(info, "%sInput: %s\n", info, avio_enum_protocols((void **) p_temp, 1));
     }
-    return env->NewStringUTF("hello world");
+    return env->NewStringUTF(info);
 }

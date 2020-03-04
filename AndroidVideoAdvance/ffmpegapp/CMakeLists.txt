@@ -3,6 +3,7 @@ set(DIR ${CMAKE_CURRENT_SOURCE_DIR})#CMAKE_SOURCE_DIR为CmakeList.txt所在的�
 set(FFMPEG_SO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs)
 message("path:" ${DIR})
 message("path2:" ${FFMPEG_SO_DIR})
+message("path3:" ${CMAKE_SOURCE_DIR})
 
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIR}/../../jniLibs/${ANDROID_ABI})
 
@@ -14,7 +15,7 @@ find_library(log-lib log)
 #add_library(yeffmpeg SHARED ${DIR}/src/main/cpp/nativelib.cpp)
 add_library(yeffmpeg SHARED ${DIR}/src/main/cpp/com_leafye_ffmpegapp_YeFFmpeg.cpp)
 
-#add_library(avcodec SHARED IMPORTED)
+#add_library(avcodec SHARED IMPORTED):
 #set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${FFMPEG_SO_DIR}/arm64-v8a/libavcodec.so)
 #
 #add_library(avfilter SHARED IMPORTED)
