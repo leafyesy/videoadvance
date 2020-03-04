@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ffmpegApp</string>
+    <string name="audio_transform">AUDIO TRANSFORM</string>
+    <string name="protocol">PROTOCOL</string>
+    <string name="format">FORMAT</string>
+    <string name="codec">CODEC</string>
+    <string name="filter">FILTER</string>
+    <string name="audio">AUDIO</string>
 </resources>
