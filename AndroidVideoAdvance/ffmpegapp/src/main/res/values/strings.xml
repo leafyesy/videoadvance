@@ -6,4 +6,5 @@
     <string name="codec">CODEC</string>
     <string name="filter">FILTER</string>
     <string name="audio">AUDIO</string>
+    <string name="ffmpeg_use">是否使用FFmpeg</string>
 </resources>

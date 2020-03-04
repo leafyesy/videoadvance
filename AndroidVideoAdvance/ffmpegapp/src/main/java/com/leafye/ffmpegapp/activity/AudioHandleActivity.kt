@@ -29,7 +29,12 @@ class AudioHandleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_audio_handle)
+        binding = DataBindingUtil.setContentView<ActivityAudioHandleBinding>(
+            this,
+            R.layout.activity_audio_handle
+        ).apply {
+            vm = this@AudioHandleActivity.vm
+        }
     }
 
 
