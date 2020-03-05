@@ -17,20 +17,93 @@
             android:id="@+id/audioTransform"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.audioTransformClick}"
+            android:onClick="@{vm::audioTransformClick}"
             android:text="@string/audio_transform"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/audioCut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.audioCutClick()}"
+            android:text="@string/audio_cut"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioTransform" />
+
+        <Button
+            android:id="@+id/audioConcat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.audioConcatClick()}"
+            android:text="@string/audio_concat"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioCut" />
+
+        <Button
+            android:id="@+id/audioMix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/audio_mix"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioConcat" />
+
+        <Button
+            android:id="@+id/audioPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/audio_play_by_audio_track"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioMix" />
+
+        <Button
+            android:id="@+id/audioPlayByOpenSL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_sl_play"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioPlay" />
+
+        <Button
+            android:id="@+id/audioEncode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/audio_encode"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/audioPlayByOpenSL" />
+
+        <Button
+            android:id="@+id/pcmConcat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pcm_concat"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioEncode" />
+
         <CheckBox
             android:id="@+id/isFFmpegCb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:checked="@{vm.useFFmpeg.booleanValue()}"
             android:text="@string/ffmpeg_use"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/btnGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="audioConcat,audioMix,audioPlay,audioPlayByOpenSL,audioEncode,audioTransform,audioCut,pcmConcat" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

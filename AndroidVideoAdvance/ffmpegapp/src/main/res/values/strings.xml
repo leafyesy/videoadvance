@@ -7,4 +7,11 @@
     <string name="filter">FILTER</string>
     <string name="audio">AUDIO</string>
     <string name="ffmpeg_use">是否使用FFmpeg</string>
+    <string name="audio_cut">AUDIO CUT</string>
+    <string name="audio_concat">AUDIO CONCAT</string>
+    <string name="audio_mix">AUDIO MIX</string>
+    <string name="audio_play_by_audio_track">AUDIO PLAY BY AUDIO TRACK</string>
+    <string name="open_sl_play">OPEN SL PLAY</string>
+    <string name="audio_encode">AUDIO ENCODE</string>
+    <string name="pcm_concat">PCM CONCAT</string>
 </resources>

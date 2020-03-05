@@ -1,0 +1,77 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+        enabledForTests = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    annotationProcessor "androidx.lifecycle:lifecycle-common-java8:$rootProject.archLifecycleVersion"
+    api "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    api "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+
+    api(rootProject.ext.dependencies["rxlifecycle-components"]) {
+        exclude group: 'com.android.support'
+    }
+
+    api(rootProject.ext.dependencies.rxlifecycle) {
+        exclude group: 'com.android.support'
+    }
+
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+
+    api "androidx.core:core-ktx:$rootProject.ktxVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
+    api "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    api "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    api "org.jetbrains.anko:anko-sdk15:0.9.1" // So here it's 15 too
+    api "org.jetbrains.anko:anko-appcompat-v7:0.9.1"
+    api "org.jetbrains.anko:anko-design:0.9.1"
+    api "org.jetbrains.anko:anko-recyclerview-v7:0.9.1"
+    api "androidx.recyclerview:recyclerview:$rootProject.recyclerVersion"
+
+    api 'io.reactivex.rxjava2:rxjava:2.0.1'
+    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+}

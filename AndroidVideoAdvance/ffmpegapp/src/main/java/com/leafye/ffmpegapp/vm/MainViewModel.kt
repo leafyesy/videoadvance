@@ -4,17 +4,19 @@ import android.app.Application
 import android.os.Environment
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.leafye.base.BaseViewModel
+import com.leafye.base.VMProduct
 import com.leafye.ffmpegapp.YeFFmpeg
+import com.leafye.ffmpegapp.model.MainModel
 
 
 /**
  * Created by leafye on 2020-03-04.
  */
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(model: MainModel) : BaseViewModel<MainModel>(model) {
 
     companion object {
         private const val TAG = "MainViewModel"
@@ -50,6 +52,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         enterAudioHandleEvent.value = ((enterAudioHandleEvent.value ?: 0) + 1)
     }
 
+}
+
+class MainViewModelProduct(private val model: MainModel) :
+    VMProduct<MainViewModel>() {
+    override fun isThis(classNew: Class<*>): MainViewModel? =
+        with(classNew) {
+            if (isAssignableFrom(MainViewModel::class.java)) {
+                MainViewModel(model)
+            } else null
+        }
 }
 
 class MainViewModelFactory(private val application: Application) :
