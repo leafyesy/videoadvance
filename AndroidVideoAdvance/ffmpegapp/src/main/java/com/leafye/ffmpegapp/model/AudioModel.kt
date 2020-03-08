@@ -1,6 +1,7 @@
 package com.leafye.ffmpegapp.model
 
 import com.leafye.base.BaseModel
+import com.leafye.ffmpegapp.utils.FFmpegTestFileManager
 
 /**
  *
@@ -14,5 +15,17 @@ import com.leafye.base.BaseModel
  * @UpdateDate:     2020/3/5 15:45
  * @UpdateRemark:
  */
-class AudioModel:BaseModel {
+class AudioModel : BaseModel {
+    /**
+     * 音频转码用的文件路径
+     */
+    fun getTransformAudioPath(): String {
+        return FFmpegTestFileManager.basePath() + "/transformAudio.mp3"
+    }
+
+    fun srcAudioFile(): String {
+        return FFmpegTestFileManager.audioFileSrc()
+    }
+
+
 }

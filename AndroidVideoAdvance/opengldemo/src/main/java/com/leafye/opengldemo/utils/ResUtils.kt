@@ -11,7 +11,7 @@ import java.io.InputStreamReader
 /**
  *
  * @ProjectName:    AndroidVideoAdvance
- * @Package:        com.leafye.opengldemo.utils
+ * @Package:        com.leafye.opengldemo.com.leafye.ffmpegapp.utils
  * @ClassName:      ResUtils
  * @Description:    资源文件读取类
  * @Author:         leafye

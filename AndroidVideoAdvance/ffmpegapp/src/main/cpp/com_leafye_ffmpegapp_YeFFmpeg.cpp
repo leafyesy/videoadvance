@@ -4,6 +4,7 @@
 #include <jni.h>
 #include <string>
 #include <android/log.h>
+#include "ffmpeg/ffmpeg.h"
 
 extern "C" {
 #include "com_leafye_ffmpegapp_YeFFmpeg.h"
@@ -214,4 +215,26 @@ Java_com_leafye_ffmpegapp_YeFFmpeg_urlprotocolinfo(
         sprintf(info, "%sInput: %s\n", info, avio_enum_protocols((void **) p_temp, 1));
     }
     return env->NewStringUTF(info);
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_leafye_ffmpegapp_YeFFmpeg_handle
+        (JNIEnv *env, jclass type, jobjectArray cmdArr) {
+    int argc = env->GetArrayLength(cmdArr);
+    char **argv = (char **) malloc(argc * sizeof(char *));
+    int i;
+    int result;
+    for (int i = 0; i < argc; ++i) {
+        auto jstr = (jstring) env->GetObjectArrayElement(cmdArr, i);
+        char *temp = (char *) (env->GetStringUTFChars(jstr, 0));
+        argv[i] = static_cast<char *>(malloc(1024));
+        strcpy(argv[i], temp);
+        env->ReleaseStringUTFChars(jstr, temp);
+    }
+    result = run(argc, argv);
+    for (int i = 0; i < argc; ++i) {
+        free(argv[i]);
+    }
+    return result;
 }

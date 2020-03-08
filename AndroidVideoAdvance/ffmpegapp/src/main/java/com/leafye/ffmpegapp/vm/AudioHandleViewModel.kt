@@ -5,6 +5,8 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.leafye.base.BaseViewModel
 import com.leafye.base.VMProduct
+import com.leafye.ffmpegapp.FFmpegUtils
+import com.leafye.ffmpegapp.ffmpeg.FFmpegCmd
 import com.leafye.ffmpegapp.model.AudioModel
 
 /**
@@ -18,21 +20,30 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
 
     val useFFmpeg: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    fun audioTransformClick(view: View) {
+    val audioTransformClick = View.OnClickListener {
         Log.d(TAG, "audio transform.")
+        if (useFFmpeg.value == true) {
+            val transformAudioCmdArr =
+                FFmpegUtils.transformAudio(model.srcAudioFile(), model.getTransformAudioPath())
+            val cmdTask = FFmpegCmd.CmdTask(transformAudioCmdArr)
+            FFmpegCmd.excute(cmdTask)
+        } else {
+            //使用MediaCodec与mp3lame转mp3
+
+        }
     }
 
-    fun audioCutClick(view: View){
+    val audioCutClick = View.OnClickListener {
 
     }
 
-    fun audioConcatClick(view:View){
+    val audioConcatClick = View.OnClickListener {
 
     }
 
 }
 
-class AudiohandleVmProduct(private val model:AudioModel) :
+class AudiohandleVmProduct(private val model: AudioModel) :
     VMProduct<AudioHandleViewModel>() {
     override fun isThis(classNew: Class<*>): AudioHandleViewModel? {
         return with(classNew) {

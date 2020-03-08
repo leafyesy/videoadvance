@@ -22,10 +22,6 @@ class MainViewModel(model: MainModel) : BaseViewModel<MainModel>(model) {
         private const val TAG = "MainViewModel"
     }
 
-    private val yeFFmpeg by lazy {
-        YeFFmpeg()
-    }
-
     val enterAudioHandleEvent = MutableLiveData<Int>()
 
     val btnCodecClick = View.OnClickListener {
@@ -33,18 +29,18 @@ class MainViewModel(model: MainModel) : BaseViewModel<MainModel>(model) {
         val path1 = "$storagePath/input.mp4"
         val path2 = "$storagePath/2.mp4"
         Log.i(TAG, "input path:$path1    output path:$path2")
-        yeFFmpeg.decode(path1, path2)
+        YeFFmpeg.instance().decode(path1, path2)
     }
     val btnFilterClick = View.OnClickListener {
-        val avfilterinfo = yeFFmpeg.avfilterinfo()
+        val avfilterinfo = YeFFmpeg.instance().avfilterinfo()
         Log.i(TAG, "filter:$avfilterinfo")
     }
     val btnFormatClick = View.OnClickListener {
-        val avformatinfo = yeFFmpeg.avformatinfo()
+        val avformatinfo = YeFFmpeg.instance().avformatinfo()
         Log.i(TAG, "format:$avformatinfo")
     }
     val btnProtocolClick = View.OnClickListener {
-        val urlprotocolinfo = yeFFmpeg.urlprotocolinfo()
+        val urlprotocolinfo = YeFFmpeg.instance().urlprotocolinfo()
         Log.i(TAG, "protocol:$urlprotocolinfo")
     }
 

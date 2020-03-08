@@ -18,6 +18,21 @@ public class YeFFmpeg {
         System.loadLibrary("yeffmpeg");
     }
 
+    public static final int RESULT_OK = 0;
+
+    private volatile static YeFFmpeg yeFFmpeg;
+
+    public static YeFFmpeg instance() {
+        if (yeFFmpeg == null) {
+            synchronized (YeFFmpeg.class) {
+                if (yeFFmpeg == null) {
+                    yeFFmpeg = new YeFFmpeg();
+                }
+            }
+        }
+        return yeFFmpeg;
+    }
+
     public native void decode(String input, String output);
 
     public native String avfilterinfo();
@@ -27,6 +42,8 @@ public class YeFFmpeg {
     public native String avformatinfo();
 
     public native String urlprotocolinfo();
+
+    public native static int handle(String[] cmd);
 
 
 }

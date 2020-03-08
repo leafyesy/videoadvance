@@ -8,7 +8,6 @@
 extern "C" {
 
 
-
 #endif
 /*
  * Class:     com_leafye_ffmpegapp_YeFFmpeg
@@ -49,6 +48,14 @@ JNIEXPORT jstring JNICALL Java_com_leafye_ffmpegapp_YeFFmpeg_avformatinfo
  */
 JNIEXPORT jstring JNICALL Java_com_leafye_ffmpegapp_YeFFmpeg_urlprotocolinfo
         (JNIEnv *, jobject);
+
+/*
+ * Class:     com_leafye_ffmpegapp_YeFFmpeg
+ * Method:    urlprotocolinfo
+ * Signature:(jobjectArray)Ljava/lang/int
+ */
+JNIEXPORT jint JNICALL Java_com_leafye_ffmpegapp_YeFFmpeg_handle
+        (JNIEnv *, jclass, jobjectArray);
 
 #ifdef __cplusplus
 }

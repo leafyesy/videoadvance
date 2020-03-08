@@ -3,8 +3,8 @@ package com.leafye.ffmpegapp.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.leafye.base.BR
 import com.leafye.base.BaseActivity
+import com.leafye.ffmpegapp.BR
 import com.leafye.ffmpegapp.R
 import com.leafye.ffmpegapp.databinding.ActivityAudioHandleBinding
 import com.leafye.ffmpegapp.vm.AudioHandleViewModel
