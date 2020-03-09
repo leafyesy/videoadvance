@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.leafye.ffmpegapp.vm.MainFragViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnProtocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnProtocolClick}"
+            android:text="@string/protocol"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btnFormat"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnFormat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnFormatClick}"
+            android:text="@string/format"
+            app:layout_constraintLeft_toRightOf="@+id/btnProtocol"
+            app:layout_constraintRight_toRightOf="@+id/btnCodec"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnCodec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnCodecClick}"
+            android:text="@string/codec"
+            app:layout_constraintLeft_toRightOf="@+id/btnFormat"
+            app:layout_constraintRight_toLeftOf="@+id/btnFilter"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnFilterClick}"
+            android:text="@string/filter"
+            app:layout_constraintLeft_toRightOf="@+id/btnCodec"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/audioHandle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnAudioHandle}"
+            android:text="@string/audio"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnProtocol" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnFilter">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/outputInfoTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

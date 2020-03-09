@@ -6,8 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.lifecycle.Observer
-import com.leafye.base.BR
+import com.leafye.ffmpegapp.BR
 import com.leafye.base.BaseActivity
 import com.leafye.ffmpegapp.R
 import com.leafye.ffmpegapp.databinding.ActivityMainBinding
@@ -21,17 +20,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     override fun initContentView(savedInstanceState: Bundle?): Int = R.layout.activity_main
 
     override fun setupObservers() {
-        viewModel.enterAudioHandleEvent.observe(this, Observer<Int> {
-            AudioHandleActivity.startActivity(this)
-        })
+
     }
 
     override fun activityPrepared() {
         verifyStoragePermissions()
-    }
-
-    companion object {
-        private const val TAG = "MainActivity"
     }
 
     private fun verifyStoragePermissions() {
