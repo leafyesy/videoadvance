@@ -7,7 +7,7 @@ import java.util.*
  * @ProjectName:    AndroidVideoAdvance
  * @Package:        com.leafye.ffmpegapp
  * @ClassName:      FFmpegUtils
- * @Description:     java类作用描述
+ * @Description:    FFmpeg 常用命令集合1
  * @Author:         leafye
  * @CreateDate:     2020/3/5 17:17
  * @UpdateUser:
@@ -30,6 +30,8 @@ class FFmpegUtils {
 
         /**
          * 使用ffmpeg命令行进行音频剪切
+         * @param startTime 起始时间 单位s
+         * @param duration 间隔时间 单位s
          */
         fun cutAudio(
             srcFile: String,
@@ -43,6 +45,7 @@ class FFmpegUtils {
 
         /**
          * 使用ffmpeg命令行进行音频合并
+         * 合并，支持MP3、AAC、AMR等，不支持PCM裸流，不支持WAV（PCM裸流加音频头）
          */
         fun concatAudio(
             srcFile: String,

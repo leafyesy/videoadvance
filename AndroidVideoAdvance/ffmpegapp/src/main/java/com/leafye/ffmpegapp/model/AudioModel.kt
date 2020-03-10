@@ -23,6 +23,13 @@ class AudioModel : BaseModel {
         return FFmpegTestFileManager.basePath() + "/transformAudio.mp3"
     }
 
+    /**
+     * 音频剪切用的文件路径
+     */
+    fun getCutPath(): String {
+        return FFmpegTestFileManager.basePath() + "/cutAudio.mp3"
+    }
+
     fun srcAudioFile(): String {
         return FFmpegTestFileManager.audioFileSrc()
     }

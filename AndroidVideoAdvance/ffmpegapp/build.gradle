@@ -9,7 +9,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.royole.ffmpegapp"
+        applicationId "com.leafye.ffmpegapp"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
