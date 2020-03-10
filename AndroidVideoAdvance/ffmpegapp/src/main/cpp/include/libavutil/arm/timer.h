@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Janne Grunau <janne-libav@jannau.net>
+ * Copyright (c) 2009 Mans Rullgard <mans@mansr.com>
  *
  * This file is part of FFmpeg.
  *
@@ -18,27 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef AVUTIL_AARCH64_TIMER_H
-#define AVUTIL_AARCH64_TIMER_H
+#ifndef AVUTIL_ARM_TIMER_H
+#define AVUTIL_ARM_TIMER_H
 
 #include <stdint.h>
 #include "ffmpeg/config.h"
 
-#if HAVE_INLINE_ASM
+#if HAVE_INLINE_ASM && defined(__ARM_ARCH_7A__)
 
 #define AV_READ_TIME read_time
 
 static inline uint64_t read_time(void)
 {
-    uint64_t cycle_counter;
-    __asm__ volatile(
-        "isb                   \t\n"
-        "mrs %0, pmccntr_el0       "
-        : "=r"(cycle_counter) :: "memory" );
-
-    return cycle_counter;
+    unsigned cc;
+    __asm__ volatile ("mrc p15, 0, %0, c9, c13, 0" : "=r"(cc));
+    return cc;
 }
 
-#endif /* HAVE_INLINE_ASM */
+#endif /* HAVE_INLINE_ASM && __ARM_ARCH_7A__ */
 
-#endif /* AVUTIL_AARCH64_TIMER_H */
+#endif /* AVUTIL_ARM_TIMER_H */
