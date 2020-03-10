@@ -47,6 +47,7 @@
             android:id="@+id/audioMix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{vm.audioMixClick}"
             android:text="@string/audio_mix"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -75,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/audio_encode"
+            android:onClick="@{vm.audioEncodeClick}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/audioPlayByOpenSL" />

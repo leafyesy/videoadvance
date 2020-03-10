@@ -24,9 +24,9 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
     val audioTransformClick = View.OnClickListener {
         Log.d(TAG, "audio transform.")
         if (useFFmpeg.value == true) {
-            checkSrcPath()?.let {
+            checkPath(model.srcAudioFile())?.let {
                 val transformAudioCmdArr =
-                    FFmpegUtils.transformAudio(it, model.getTransformAudioPath())
+                    FFmpegUtils.transformAudio(it[0], model.getTransformAudioPath())
                 val cmdTask = FFmpegCmd.CmdTask(transformAudioCmdArr)
                 FFmpegCmd.excute(cmdTask)
             }
@@ -36,9 +36,9 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
     }
 
     val audioCutClick = View.OnClickListener {
-        checkSrcPath()?.let {
+        checkPath(model.srcAudioFile())?.let {
             val cutAudioCmdArr = FFmpegUtils.cutAudio(
-                srcFile = it,
+                srcFile = it[0],
                 startTime = 10,
                 duration = 10,
                 targetFile = model.getCutPath()
@@ -48,16 +48,51 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
     }
 
     val audioConcatClick = View.OnClickListener {
-
+        checkPath(model.srcAudioFile(), model.getAppendAudioPath())
+            ?.let {
+                val concatAudioCmdArr =
+                    FFmpegUtils.concatAudio(it[0], it[1], model.getConcatPath())
+                FFmpegCmd.excute(FFmpegCmd.CmdTask(concatAudioCmdArr))
+            }
     }
 
-    private fun checkSrcPath(): String? {
-        val src = model.srcAudioFile()
-        if (!FFmpegTestFileManager.checkFile(src)) {
-            Log.e(TAG, "文件不存在:$src")
-            return null
+    val audioMixClick = View.OnClickListener {
+        checkPath(model.srcAudioFile(), model.getAppendAudioPath())
+            ?.let {
+                val mixAudioCmdArr = FFmpegUtils.mixAudio(it[0], it[1], model.getMixPath())
+                FFmpegCmd.excute(FFmpegCmd.CmdTask(mixAudioCmdArr))
+            }
+    }
+
+    val audioEncodeClick = View.OnClickListener {
+        checkPath(model.getTestPcmPath())?.let {
+            val sampleRate = 8000//pcm数据的采样率，一般采样率为8000、16000、44100
+            val channel = 1//pcm数据的声道，单声道为1，立体声道为2
+            val encodeAudioCmdArr =
+                FFmpegUtils.encodeAudio(
+                    srcFile = it[0],
+                    targetFile = model.encodeWavPath(),
+                    sampleRate = sampleRate,
+                    channel = channel
+                )
+            FFmpegCmd.excute(FFmpegCmd.CmdTask(encodeAudioCmdArr))
         }
-        return src
+    }
+
+
+
+
+    private fun checkPath(vararg path: String?): MutableList<String>? {
+        return mutableListOf<String>().apply {
+            path.forEach {
+                if (!FFmpegTestFileManager.checkFile(it)) {
+                    Log.e(TAG, "文件不存在:$it")
+                    return null
+                } else {
+                    add(it!!)
+                }
+            }
+        }
     }
 
 }
