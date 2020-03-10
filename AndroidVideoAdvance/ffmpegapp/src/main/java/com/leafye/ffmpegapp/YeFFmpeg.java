@@ -1,5 +1,9 @@
 package com.leafye.ffmpegapp;
 
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
+
 /**
  * @ProjectName: AndroidVideoAdvance
  * @Package: com.royole.ffmpegapp
@@ -44,6 +48,29 @@ public class YeFFmpeg {
     public native String urlprotocolinfo();
 
     public native static int handle(String[] cmd);
+
+    public native int ffmpegPlay(String input);
+
+    /**
+     * 创建一个AudioTrack对象
+     * @param sampleRate 采样率
+     * @param channels 声道布局
+     * @return AudioTrack
+     */
+    public AudioTrack createAudioTrack(int sampleRate, int channels){
+        int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+        int channelConfig;
+        if(channels == 1){
+            channelConfig = AudioFormat.CHANNEL_OUT_MONO;
+        }else if(channels == 2){
+            channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
+        }else{
+            channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
+        }
+        int bufferSizeInBytes = AudioTrack.getMinBufferSize(sampleRate, channelConfig, audioFormat);
+        return new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channelConfig, audioFormat,
+                bufferSizeInBytes, AudioTrack.MODE_STREAM);
+    }
 
 
 }

@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import com.leafye.base.BaseViewModel
 import com.leafye.base.VMProduct
 import com.leafye.ffmpegapp.FFmpegUtils
+import com.leafye.ffmpegapp.YeFFmpeg
 import com.leafye.ffmpegapp.ffmpeg.FFmpegCmd
 import com.leafye.ffmpegapp.model.AudioModel
 import com.leafye.ffmpegapp.utils.FFmpegTestFileManager
+import kotlin.concurrent.thread
 
 /**
  * Created by leafye on 2020-03-04.
@@ -79,11 +81,17 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
         }
     }
 
+    val audioPlayTrackClick = View.OnClickListener {
+        checkPath(model.srcAudioFile())?.let {
+            thread {
+                YeFFmpeg.instance().ffmpegPlay(it[0])
+            }
+        }
+    }
 
 
-
-    private fun checkPath(vararg path: String?): MutableList<String>? {
-        return mutableListOf<String>().apply {
+    private fun checkPath(vararg path: String?): MutableList<String>? =
+        mutableListOf<String>().apply {
             path.forEach {
                 if (!FFmpegTestFileManager.checkFile(it)) {
                     Log.e(TAG, "文件不存在:$it")
@@ -93,7 +101,6 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
                 }
             }
         }
-    }
 
 }
 
