@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.leafye.base.BaseFragment
 import com.leafye.ffmpegapp.BR
 import com.leafye.ffmpegapp.R
+import com.leafye.ffmpegapp.baseNavOptions
 import com.leafye.ffmpegapp.databinding.FragmentVideoHandleBinding
 import com.leafye.ffmpegapp.vm.VideoHandleViewModel
 
@@ -26,7 +27,7 @@ import com.leafye.ffmpegapp.vm.VideoHandleViewModel
 class VideoHandleFragment : BaseFragment<VideoHandleViewModel, FragmentVideoHandleBinding>() {
     companion object {
         fun startFragment(frag: Fragment) {
-            frag.findNavController().navigate(R.id.videoHandleFragment)
+            frag.findNavController().navigate(R.id.videoHandleFragment, null, baseNavOptions())
         }
     }
 
@@ -36,9 +37,7 @@ class VideoHandleFragment : BaseFragment<VideoHandleViewModel, FragmentVideoHand
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): Int {
-        return R.layout.fragment_video_handle
-    }
+    ) = R.layout.fragment_video_handle
 
     override fun setupObservers() {
     }

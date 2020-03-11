@@ -1,2 +1,2 @@
-include ':app', ':opengldemo', ':ffmpegapp', ':base'
+include ':app', ':opengldemo', ':ffmpegapp', ':base', ':gpuimagedemo'
 rootProject.name='AndroidVideoAdvance'

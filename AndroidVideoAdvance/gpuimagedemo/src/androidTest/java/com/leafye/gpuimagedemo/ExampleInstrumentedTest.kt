@@ -1,4 +1,4 @@
-package com.leafye.ffmpegapp
+package com.leafye.gpuimagedemo
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.leafye.ffmpegapp", appContext.packageName)
+        assertEquals("com.leafye.gpuimagedemo", appContext.packageName)
     }
 }

@@ -45,6 +45,9 @@ class VideoHandleViewModel(model: VideoHandleModel) : BaseViewModel<VideoHandleM
         val urlprotocolinfo = YeFFmpeg.instance().urlprotocolinfo()
         Log.i(TAG, "protocol:$urlprotocolinfo")
     }
+
+
+
 }
 
 class ViewHandleViewModelProduct(private val model: VideoHandleModel) :

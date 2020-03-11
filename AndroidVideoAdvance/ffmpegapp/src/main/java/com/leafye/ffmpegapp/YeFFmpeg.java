@@ -6,7 +6,7 @@ import android.media.AudioTrack;
 
 /**
  * @ProjectName: AndroidVideoAdvance
- * @Package: com.royole.ffmpegapp
+ * @Package: com.leafye.ffmpegapp
  * @ClassName: YeFFmpeg
  * @Description: java类作用描述
  * @Author: leafye

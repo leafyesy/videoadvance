@@ -9,6 +9,7 @@ import androidx.navigation.navOptions
 import com.leafye.base.BaseFragment
 import com.leafye.ffmpegapp.BR
 import com.leafye.ffmpegapp.R
+import com.leafye.ffmpegapp.baseNavOptions
 import com.leafye.ffmpegapp.databinding.FragmentAudioHandleBinding
 import com.leafye.ffmpegapp.vm.AudioHandleViewModel
 
@@ -29,15 +30,7 @@ class AudioHandleFragment : BaseFragment<AudioHandleViewModel, FragmentAudioHand
     companion object {
 
         fun startFragment(frag: Fragment) {
-
-            frag.findNavController().navigate(R.id.audioHandleFragment, null, navOptions {
-                anim {
-                    enter = R.anim.anim_slide_in_right
-                    exit = R.anim.anim_slide_out_left
-                    popEnter = R.anim.anim_slide_in_left
-                    popExit = R.anim.anim_slide_out_right
-                }
-            })
+            frag.findNavController().navigate(R.id.audioHandleFragment, null, baseNavOptions())
         }
     }
 
