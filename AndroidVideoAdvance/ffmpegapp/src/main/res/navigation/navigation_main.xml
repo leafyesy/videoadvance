@@ -11,9 +11,16 @@
         <action
             android:id="@+id/action_mainFragment_to_audioHandleFragment"
             app:destination="@id/audioHandleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_videoHandleFragment"
+            app:destination="@id/videoHandleFragment" />
     </fragment>
     <fragment
         android:id="@+id/audioHandleFragment"
         android:name="com.leafye.ffmpegapp.fragment.AudioHandleFragment"
         android:label="AudioHandleFragment" />
+    <fragment
+        android:id="@+id/videoHandleFragment"
+        android:name="com.leafye.ffmpegapp.fragment.VideoHandleFragment"
+        android:label="VideoHandleFragment" />
 </navigation>
