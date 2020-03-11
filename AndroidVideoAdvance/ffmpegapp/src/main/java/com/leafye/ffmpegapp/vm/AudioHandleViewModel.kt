@@ -90,11 +90,15 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
     }
 
     val audioPlayByOpenSLClick = View.OnClickListener {
-        checkPath(model.getTestPcmPath())?.let {
+        checkPath(model.srcAudioFile())?.let {
             thread {
                 YeFFmpeg.instance().openslPlayer(it[0])
             }
         }
+    }
+
+    val stopAudioPlayByOpenSLClick = View.OnClickListener {
+        YeFFmpeg.instance().stopOpenslPlayer()
     }
 
 

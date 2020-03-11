@@ -167,7 +167,8 @@ int createAudioPlayer(int *rate, int *channel, const char *file_name) {
     //打开音频文件
     int open_result = avformat_open_input(&aFormatCtx, file_name, NULL, NULL);
     if (open_result != 0) {
-        ALOGE("Couldn't open file:%s error code:%d\n", file_name, open_result);
+        ALOGE("Couldn't open file:%s error code:%d message:%s\n", file_name, open_result,
+              av_err2str(open_result));
         return -1; // Couldn't open file
     }
     //寻找stream信息
