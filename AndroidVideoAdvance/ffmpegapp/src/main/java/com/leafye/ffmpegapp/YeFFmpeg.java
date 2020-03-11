@@ -51,20 +51,25 @@ public class YeFFmpeg {
 
     public native int ffmpegPlay(String input);
 
+    public native int openslPlayer(String input);
+
+    public native int stopOpenslPlayer();
+
     /**
      * 创建一个AudioTrack对象
+     *
      * @param sampleRate 采样率
-     * @param channels 声道布局
+     * @param channels   声道布局
      * @return AudioTrack
      */
-    public AudioTrack createAudioTrack(int sampleRate, int channels){
+    public AudioTrack createAudioTrack(int sampleRate, int channels) {
         int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
         int channelConfig;
-        if(channels == 1){
+        if (channels == 1) {
             channelConfig = AudioFormat.CHANNEL_OUT_MONO;
-        }else if(channels == 2){
+        } else if (channels == 2) {
             channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
-        }else{
+        } else {
             channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
         }
         int bufferSizeInBytes = AudioTrack.getMinBufferSize(sampleRate, channelConfig, audioFormat);

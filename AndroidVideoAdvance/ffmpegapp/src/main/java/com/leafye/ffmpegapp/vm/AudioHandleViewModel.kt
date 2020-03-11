@@ -89,6 +89,14 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
         }
     }
 
+    val audioPlayByOpenSLClick = View.OnClickListener {
+        checkPath(model.getTestPcmPath())?.let {
+            thread {
+                YeFFmpeg.instance().openslPlayer(it[0])
+            }
+        }
+    }
+
 
     private fun checkPath(vararg path: String?): MutableList<String>? =
         mutableListOf<String>().apply {

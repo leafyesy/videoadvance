@@ -65,7 +65,21 @@ JNIEXPORT jint JNICALL Java_com_leafye_ffmpegapp_YeFFmpeg_handle
 JNIEXPORT jint JNICALL Java_com_leafye_ffmpegapp_YeFFmpeg_ffmpegPlay
         (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_leafye_ffmpegapp_YeFFmpeg
+ * Method:    openslPlayer
+ * Signature:(jstring)Ljava/lang/int
+ */
+JNIEXPORT jint JNICALL
+Java_com_leafye_ffmpegapp_YeFFmpeg_openslPlayer(JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_leafye_ffmpegapp_YeFFmpeg
+ * Method:    openslPlayer
+ * Signature:()Ljava/lang/int
+ */
+JNIEXPORT jint JNICALL
+Java_com_leafye_ffmpegapp_YeFFmpeg_stopOpenslPlayer(JNIEnv *env, jobject thiz);
 
 #ifdef __cplusplus
 }
