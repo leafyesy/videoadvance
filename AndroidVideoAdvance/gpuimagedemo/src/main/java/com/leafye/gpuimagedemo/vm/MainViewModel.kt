@@ -1,6 +1,9 @@
 package com.leafye.gpuimagedemo.vm
 
+import androidx.lifecycle.MutableLiveData
 import com.leafye.base.BaseViewModel
+import com.leafye.base.VMProduct
+import com.leafye.gpuimagedemo.data.FilterItem
 import com.leafye.gpuimagedemo.model.MainModel
 
 /**
@@ -17,8 +20,20 @@ import com.leafye.gpuimagedemo.model.MainModel
  */
 class MainViewModel(model: MainModel) : BaseViewModel<MainModel>(model) {
 
+    val filterItemList = MutableLiveData<MutableList<FilterItem>>()
 
+    fun refreshFilterItemList() {
+        filterItemList.value = model.getFilterList()
+    }
 
+}
 
+class MainViewModelProduct(private val model: MainModel) : VMProduct<MainViewModel>() {
+    override fun isThis(classNew: Class<*>): MainViewModel? =
+        with(classNew) {
+            if (isAssignableFrom(MainViewModel::class.java)) {
+                MainViewModel(model)
+            } else null
+        }
 
 }

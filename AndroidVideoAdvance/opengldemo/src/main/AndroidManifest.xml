@@ -37,7 +37,7 @@
 
         <activity android:name=".glproxy.ShapeActivity" />
 
-        <activity android:name=".recordCamera.RecordCameraActivity" />
+<!--        <activity android:name=".recordCamera.RecordCameraActivity" />-->
 
         <activity android:name=".recordCamera.GLCameraActivity" />
     </application>

@@ -1,6 +1,7 @@
 package com.leafye.gpuimagedemo.model
 
 import com.leafye.base.BaseModel
+import com.leafye.gpuimagedemo.data.FilterItem
 
 /**
  *
@@ -15,4 +16,13 @@ import com.leafye.base.BaseModel
  * @UpdateRemark:
  */
 class MainModel: BaseModel {
+
+    fun getFilterList():MutableList<FilterItem>{
+        return mutableListOf<FilterItem>().apply{
+            add(FilterItem("holo"))
+            add(FilterItem("lemon"))
+        }
+    }
+
+
 }
