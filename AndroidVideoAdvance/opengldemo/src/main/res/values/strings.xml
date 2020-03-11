@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OpenGLDemo</string>
+    <string name="record">RECORD</string>
 </resources>

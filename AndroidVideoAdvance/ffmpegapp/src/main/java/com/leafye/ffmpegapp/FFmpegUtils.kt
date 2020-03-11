@@ -7,7 +7,7 @@ import java.util.*
  * @ProjectName:    AndroidVideoAdvance
  * @Package:        com.leafye.ffmpegapp
  * @ClassName:      FFmpegUtils
- * @Description:    FFmpeg 常用命令集合1
+ * @Description:    FFmpeg 常用命令集合
  * @Author:         leafye
  * @CreateDate:     2020/3/5 17:17
  * @UpdateUser:

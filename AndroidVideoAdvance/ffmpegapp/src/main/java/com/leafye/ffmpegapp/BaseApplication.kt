@@ -8,9 +8,11 @@ import com.leafye.base.utils.Utils
 import com.leafye.ffmpegapp.model.AudioModel
 import com.leafye.ffmpegapp.model.MainFragModel
 import com.leafye.ffmpegapp.model.MainModel
+import com.leafye.ffmpegapp.model.VideoHandleModel
 import com.leafye.ffmpegapp.vm.AudiohandleVmProduct
 import com.leafye.ffmpegapp.vm.MainFragViewModelProduct
 import com.leafye.ffmpegapp.vm.MainViewModelProduct
+import com.leafye.ffmpegapp.vm.ViewHandleViewModelProduct
 
 /**
  *
@@ -31,6 +33,7 @@ class BaseApplication : Application() {
             add(MainViewModelProduct(MainModel()))
             add(AudiohandleVmProduct(AudioModel()))
             add(MainFragViewModelProduct(MainFragModel()))
+            add(ViewHandleViewModelProduct(VideoHandleModel()))
         }
 
 

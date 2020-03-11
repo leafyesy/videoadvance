@@ -39,6 +39,9 @@ class MainFragment : BaseFragment<MainFragViewModel, FragmentMainBinding>() {
         viewModel.enterAudioHandleEvent.observe(this, Observer<Int> {
             AudioHandleFragment.startFragment(this@MainFragment)
         })
+        viewModel.enterVideoHandleEvent.observe(this, Observer<Int> {
+            VideoHandleFragment.startFragment(this@MainFragment)
+        })
     }
 
     override fun fragmentPrepared() {

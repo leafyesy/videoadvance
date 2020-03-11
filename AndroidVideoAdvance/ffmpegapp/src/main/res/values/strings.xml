@@ -28,4 +28,6 @@
 
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
+    <string name="stop_opensl_es_play">STOP OPENSL ES PLAY</string>
+    <string name="video">VIDEO</string>
 </resources>
