@@ -33,7 +33,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="100dp"
                 app:layout_constraintBottom_toBottomOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatActionBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <include layout="@layout/bottom_sheet_main" />
 

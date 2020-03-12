@@ -6,20 +6,29 @@
     <data>
 
         <variable
+            name="vh"
+            type="com.leafye.gpuimagedemo.adapter.FilterAdapter.FilterItemViewHolder" />
+
+        <variable
+            name="vm"
+            type="com.leafye.gpuimagedemo.vm.FilterViewModel" />
+
+        <variable
             name="ft"
             type="com.leafye.gpuimagedemo.data.FilterItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/colorAccent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent">
 
         <TextView
             android:id="@+id/filterTv"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
+            android:onClick="@{()->vm.filterClick(ft)}"
             android:text="@{ft.filterName}"
             android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"

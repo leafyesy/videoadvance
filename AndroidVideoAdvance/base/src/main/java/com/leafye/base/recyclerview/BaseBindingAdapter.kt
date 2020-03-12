@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by leafye on 2020/3/11.
  */
-class BaseBindingAdapter<T>(
+open class BaseBindingAdapter<T>(
     protected val context: Context,
     private var itemList: MutableList<T>? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

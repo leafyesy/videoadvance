@@ -2,20 +2,13 @@ package com.leafye.gpuimagedemo
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.leafye.base.BaseActivity
-import com.leafye.base.recyclerview.BaseBindViewHolder
-import com.leafye.base.recyclerview.BaseBindingAdapter
-import com.leafye.base.recyclerview.ViewHolderWrap
-import com.leafye.gpuimagedemo.data.FilterItem
+import com.leafye.gpuimagedemo.adapter.FilterAdapter
 import com.leafye.gpuimagedemo.databinding.ActivityMainBinding
-import com.leafye.gpuimagedemo.databinding.ItemFilterBinding
+import com.leafye.gpuimagedemo.vm.FilterViewModel
 import com.leafye.gpuimagedemo.vm.MainViewModel
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,6 +17,10 @@ import kotlinx.android.synthetic.main.bottom_sheet_main.*
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
     override fun initVariableId(): Int = BR._all
 
     override fun initContentView(savedInstanceState: Bundle?) = R.layout.activity_main
@@ -31,21 +28,31 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(bottomSheetRv) }
 
     private val filterAdapter by lazy {
-        BaseBindingAdapter<FilterItem>(this@MainActivity)
-            .apply {
-                addHolder(createFilterHolderWrap())
-            }
+        FilterAdapter(this@MainActivity, filterViewModel)
+    }
+
+    private val filterViewModel: FilterViewModel by lazy {
+        FilterViewModel()
     }
 
     override fun setupObservers() {
         viewModel.filterItemList.observe(this@MainActivity, Observer {
             filterAdapter.refresh(it)
         })
+        filterViewModel.gpuImageFilter.observe(this@MainActivity, Observer { filter ->
+            filter ?: return@Observer
+            if (gpuImageView.filter?.javaClass != filter.javaClass) {
+                gpuImageView.filter = filter
+            }
+        })
     }
 
     override fun activityPrepared() {
         initGPUImageView()
         initBottomSheet()
+        floatActionBtn.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
     }
 
     private fun initGPUImageView() {
@@ -64,27 +71,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             adapter = filterAdapter
         }
         viewModel.refreshFilterItemList()
-    }
-
-    private fun createFilterHolderWrap() = object :
-        ViewHolderWrap<FilterItem, ItemFilterBinding, BaseBindViewHolder<ItemFilterBinding>>() {
-
-        override fun createBinding(parent: ViewGroup?): ItemFilterBinding {
-            return DataBindingUtil.inflate<ViewDataBinding>(
-                LayoutInflater.from(this@MainActivity),
-                R.layout.item_filter,
-                parent,
-                false
-            ) as ItemFilterBinding
-        }
-
-        override fun onBind(
-            itemBinding: ItemFilterBinding,
-            itemList: MutableList<FilterItem>,
-            position: Int
-        ) {
-            itemBinding.setVariable(BR.ft, itemList[position])
-        }
     }
 
 
