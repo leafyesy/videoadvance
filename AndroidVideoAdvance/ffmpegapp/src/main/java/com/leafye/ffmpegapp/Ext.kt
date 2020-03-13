@@ -1,7 +1,10 @@
 package com.leafye.ffmpegapp
 
+import android.util.Log
 import androidx.navigation.NavOptions
 import androidx.navigation.navOptions
+import com.leafye.ffmpegapp.utils.FFmpegTestFileManager
+import com.leafye.ffmpegapp.vm.AudioHandleViewModel
 
 /**
  *
@@ -26,3 +29,15 @@ fun baseNavOptions(): NavOptions {
         }
     }
 }
+
+fun checkPath(vararg path: String?): MutableList<String>? =
+    mutableListOf<String>().apply {
+        path.forEach {
+            if (!FFmpegTestFileManager.checkFile(it)) {
+                Log.e("FileCheck", "文件不存在:$it")
+                return null
+            } else {
+                add(it!!)
+            }
+        }
+    }

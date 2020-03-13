@@ -5,8 +5,12 @@ import android.util.Log
 import android.view.View
 import com.leafye.base.BaseViewModel
 import com.leafye.base.VMProduct
+import com.leafye.ffmpegapp.FFmpegUtils
 import com.leafye.ffmpegapp.YeFFmpeg
+import com.leafye.ffmpegapp.checkPath
+import com.leafye.ffmpegapp.ffmpeg.FFmpegCmd
 import com.leafye.ffmpegapp.model.VideoHandleModel
+import java.lang.StringBuilder
 
 /**
  *
@@ -46,6 +50,56 @@ class VideoHandleViewModel(model: VideoHandleModel) : BaseViewModel<VideoHandleM
         Log.i(TAG, "protocol:$urlprotocolinfo")
     }
 
+    val btnTransformClick = View.OnClickListener {
+        checkPath(model.srcVideoPath())?.let {
+            val transformVideoCmdArr =
+                FFmpegUtils.transformVideo(it[0], model.getTransformPath())
+            StringBuilder().apply {
+                transformVideoCmdArr.forEach { str ->
+                    append(str).append(" ")
+                }
+            }.also { sb ->
+                Log.i(TAG, sb.toString())
+            }
+            FFmpegCmd.excute(FFmpegCmd.CmdTask(transformVideoCmdArr))
+        }
+    }
+
+    val btnVideoCutClick = View.OnClickListener {
+        checkPath(model.srcVideoPath())?.let {
+            val cutVideoCmdArr = FFmpegUtils.cutVideo(
+                srcFile = it[0],
+                startTime = 20,
+                duration = 10,
+                targetFile = model.getCutVideoPath()
+            )
+            FFmpegCmd.excute(FFmpegCmd.CmdTask(cutVideoCmdArr))
+        }
+    }
+
+    val btnScreenShotClick = View.OnClickListener {
+        checkPath(model.srcVideoPath())?.let {
+            val screenShotCmdArr = FFmpegUtils.sreenShot(
+                it[0],
+                10,
+                model.getScreenShotPath()
+            )
+            FFmpegCmd.excute(FFmpegCmd.CmdTask(screenShotCmdArr))
+        }
+    }
+
+    val addWaterClick = View.OnClickListener {
+        checkPath(model.srcVideoPath())?.let {
+            val addWaterMarkCmdArr = FFmpegUtils.addWaterMark(
+                srcFile = it[0],
+                waterMark = model.getWaterPath(),
+                resolution = "100x100",
+                bitRate = 100,
+                targetFile = model.getWaterPathTarget()
+            )
+            FFmpegCmd.excute(FFmpegCmd.CmdTask(addWaterMarkCmdArr))
+        }
+    }
 
 
 }

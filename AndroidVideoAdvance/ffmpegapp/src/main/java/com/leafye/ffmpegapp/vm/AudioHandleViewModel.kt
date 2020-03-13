@@ -7,6 +7,7 @@ import com.leafye.base.BaseViewModel
 import com.leafye.base.VMProduct
 import com.leafye.ffmpegapp.FFmpegUtils
 import com.leafye.ffmpegapp.YeFFmpeg
+import com.leafye.ffmpegapp.checkPath
 import com.leafye.ffmpegapp.ffmpeg.FFmpegCmd
 import com.leafye.ffmpegapp.model.AudioModel
 import com.leafye.ffmpegapp.utils.FFmpegTestFileManager
@@ -100,20 +101,6 @@ class AudioHandleViewModel(model: AudioModel) : BaseViewModel<AudioModel>(model)
     val stopAudioPlayByOpenSLClick = View.OnClickListener {
         YeFFmpeg.instance().stopOpenslPlayer()
     }
-
-
-    private fun checkPath(vararg path: String?): MutableList<String>? =
-        mutableListOf<String>().apply {
-            path.forEach {
-                if (!FFmpegTestFileManager.checkFile(it)) {
-                    Log.e(TAG, "文件不存在:$it")
-                    return null
-                } else {
-                    add(it!!)
-                }
-            }
-        }
-
 }
 
 class AudiohandleVmProduct(private val model: AudioModel) :

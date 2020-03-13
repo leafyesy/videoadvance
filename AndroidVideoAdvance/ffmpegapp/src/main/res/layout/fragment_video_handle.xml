@@ -54,6 +54,48 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/transform"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnTransformClick}"
+            android:text="tran"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btnVideoCut"
+            app:layout_constraintTop_toBottomOf="@+id/btnProtocol" />
+
+
+        <Button
+            android:id="@+id/btnVideoCut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnVideoCutClick}"
+            android:text="CUT"
+            app:layout_constraintLeft_toRightOf="@+id/transform"
+            app:layout_constraintRight_toLeftOf="@+id/btnScreenShot"
+            app:layout_constraintTop_toTopOf="@+id/transform" />
+
+        <Button
+            android:id="@+id/btnScreenShot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.btnScreenShotClick}"
+            android:text="SHOT"
+            app:layout_constraintLeft_toRightOf="@+id/btnVideoCut"
+            app:layout_constraintRight_toLeftOf="@+id/addWater"
+            app:layout_constraintTop_toTopOf="@+id/transform" />
+
+        <Button
+            android:id="@+id/addWater"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.addWaterClick}"
+            android:text="WATER"
+            app:layout_constraintLeft_toRightOf="@+id/btnScreenShot"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/transform" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
