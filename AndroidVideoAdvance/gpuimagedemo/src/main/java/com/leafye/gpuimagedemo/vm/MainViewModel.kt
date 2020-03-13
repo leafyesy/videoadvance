@@ -28,8 +28,14 @@ class MainViewModel(model: MainModel) : BaseViewModel<MainModel>(model) {
 
     val filterItemList = MutableLiveData<MutableList<FilterItem>>()
 
+    val bottomSheetOpen = MutableLiveData<Boolean>(false)
+
     fun refreshFilterItemList() {
         filterItemList.value = model.getFilterList()
+    }
+
+    fun floatActionClick() {
+        bottomSheetOpen.value = !bottomSheetOpen.value!!
     }
 
 }

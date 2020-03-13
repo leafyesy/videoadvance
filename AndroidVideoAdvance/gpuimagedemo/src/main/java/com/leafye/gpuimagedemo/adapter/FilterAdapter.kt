@@ -39,7 +39,7 @@ class FilterAdapter(
             position: Int
         ) {
             itemBinding.setVariable(BR.ft, itemList[position])
-            itemBinding.vm = viewModel
+            itemBinding.setVariable(BR.vm, viewModel)
         }
     }
 }
