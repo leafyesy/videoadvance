@@ -27,6 +27,12 @@ class VideoHandleModel : BaseModel {
             Log.i(TAG, "srcVideoPath:$it")
         }
 
+    fun getCodecPath() =
+        FFmpegTestFileManager.basePath() + "/codec.mp4"
+
+    fun srcVideoPath2() =
+        FFmpegTestFileManager.basePath() + "/input2.mp4"
+
     fun getTransformPath() =
         FFmpegTestFileManager.basePath() + "/input_tran.flv"
 
@@ -41,4 +47,22 @@ class VideoHandleModel : BaseModel {
 
     fun getWaterPathTarget() =
         FFmpegTestFileManager.basePath() + "/water.mp4"
+
+    fun getGitPathTarget() =
+        FFmpegTestFileManager.basePath() + "/gif.gif"
+
+    fun getScreenRecord() =
+        FFmpegTestFileManager.basePath() + "/record.mp4"
+
+    fun multiPath() =
+        FFmpegTestFileManager.basePath() + "/multi.mp4"
+
+    fun reversePath() =
+        FFmpegTestFileManager.basePath() + "/reverse.mp4"
+
+    fun denoisePath() =
+        FFmpegTestFileManager.basePath() + "/denoise.mp4"
+
+    fun toImagePathPrefix() =
+        FFmpegTestFileManager.basePath() + "/toImage"
 }

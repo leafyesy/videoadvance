@@ -21,7 +21,7 @@ object FFmpegCmd {
     /**
      * 最大执行任务数
      */
-    private val MAX_EXCUTE_TASK_COUNT = 5
+    private const val MAX_EXCUTE_TASK_COUNT = 5
 
     private val waitTaskList by lazy {
         CopyOnWriteArrayList<CmdTask>()
@@ -74,13 +74,16 @@ object FFmpegCmd {
                 }
                 cmdTask.resultCallback?.error(Result(Result.Type.ERROR).apply {
                     if (it is HandleErrorException) code = it.code
+                    if (it is ParamInvalidException) code = 1
+                    if (it is DiscardException) code = 2
+                    if (it is TaskFullException) code = 3
+                    msg = it.message
                 })
                 checkAndExcute()
             }).also {
                 com.add(it)
                 cmdTask.disposable = it
             }
-
     }
 
     private fun checkAndExcute() {
@@ -106,9 +109,11 @@ object FFmpegCmd {
         com.clear()
     }
 
-    data class CmdTask(val cmdArr: Array<String>? = null) {
-        var isBgExcute: Boolean = false//是否后台执行,如果有必要,否则任务数已满就会丢弃
+    data class CmdTask(
+        val cmdArr: Array<String>? = null,
         var resultCallback: ResultCallback? = null
+    ) {
+        var isBgExcute: Boolean = false//是否后台执行,如果有必要,否则任务数已满就会丢弃
         var disposable: Disposable? = null
     }
 

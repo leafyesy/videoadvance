@@ -190,6 +190,7 @@ class FFmpegUtils {
         /**
          * 使用ffmpeg命令行进行屏幕录制
          */
+
         fun screenRecord(
             size: String,
             recordTime: Int,
@@ -287,8 +288,10 @@ class FFmpegUtils {
             targetFile: String
         ): Array<String> {
             val cmd = "ffmpeg -i %s -ss %s -t %s -r %s %s"
-            return String.format(cmd, inputFile, startTime, duration, frameRate, targetFile)
-                .splitToArray()
+            String.format(cmd, inputFile, startTime, duration, frameRate, targetFile)
+                .also {
+                    return "$it%3d.jpg".splitToArray()
+                }
         }
 
         /**
