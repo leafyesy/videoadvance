@@ -46,24 +46,37 @@ class VideoHandleFragment : BaseFragment<VideoHandleViewModel, FragmentVideoHand
 
     override fun setupObservers() {
         viewModel.resultLiveData.observe(this@VideoHandleFragment, Observer {
-            when (it.type) {
-                Result.Type.BEGIN,
-                Result.Type.PROGRESS ->
-                    progressBar.visibility = View.VISIBLE
-                Result.Type.ERROR -> {
-                    progressBar.visibility = View.GONE
+            handleResult(it)
+        })
+    }
+
+    private fun handleResult(it: Result) {
+        when (it.type) {
+            Result.Type.BEGIN -> {
+                outputInfoTv.text = (outputInfoTv.text.toString() + "\n Begin...")
+            }
+            Result.Type.PROGRESS -> {
+                progressBar.visibility = View.VISIBLE
+                outputInfoTv.text =
+                    (outputInfoTv.text.toString() + "\n Progress:${it.progresss}...")
+            }
+            Result.Type.ERROR -> {
+                progressBar.visibility = View.GONE
+                "error code:${it.code} msg:${it.msg}".let { msg ->
                     Toast.makeText(
                         getFragActivity(),
-                        "error code:${it.code} msg:${it.msg}",
+                        msg,
                         Toast.LENGTH_SHORT
                     ).show()
-                }
-                Result.Type.SUCCESS -> {
-                    progressBar.visibility = View.GONE
-                    Toast.makeText(getFragActivity(), "处理成功", Toast.LENGTH_SHORT).show()
+                    outputInfoTv.text = (outputInfoTv.text.toString() + "\n" + msg)
                 }
             }
-        })
+            Result.Type.SUCCESS -> {
+                progressBar.visibility = View.GONE
+                Toast.makeText(getFragActivity(), "处理成功", Toast.LENGTH_SHORT).show()
+                outputInfoTv.text = (outputInfoTv.text.toString() + "\n End")
+            }
+        }
     }
 
     override fun fragmentPrepared() {
