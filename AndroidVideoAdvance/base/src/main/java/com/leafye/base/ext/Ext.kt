@@ -1,6 +1,8 @@
 package com.leafye.base.ext
 
 import android.content.Context
+import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -22,3 +24,13 @@ fun <T : ViewDataBinding> bindingInflate(
         isAttach
     ) as T
 }
+
+fun <T> Any.logi(tag: String = "") = this.also {
+    val t =
+        if (TextUtils.isEmpty(tag)) {
+            this.javaClass.simpleName
+        } else {
+            tag
+        }
+    Log.i(t, this.toString())
+} as T

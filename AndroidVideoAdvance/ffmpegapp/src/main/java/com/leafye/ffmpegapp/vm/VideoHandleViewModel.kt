@@ -10,7 +10,6 @@ import com.leafye.ffmpegapp.YeFFmpeg
 import com.leafye.ffmpegapp.checkPath
 import com.leafye.ffmpegapp.ffmpeg.FFmpegCmd
 import com.leafye.ffmpegapp.model.VideoHandleModel
-import java.lang.StringBuilder
 
 /**
  *
@@ -79,7 +78,7 @@ class VideoHandleViewModel(model: VideoHandleModel) : BaseViewModel<VideoHandleM
 
     val btnScreenShotClick = View.OnClickListener {
         checkPath(model.srcVideoPath())?.let {
-            val screenShotCmdArr = FFmpegUtils.sreenShot(
+            val screenShotCmdArr = FFmpegUtils.screenShot(
                 it[0],
                 10,
                 model.getScreenShotPath()
@@ -93,10 +92,11 @@ class VideoHandleViewModel(model: VideoHandleModel) : BaseViewModel<VideoHandleM
             val addWaterMarkCmdArr = FFmpegUtils.addWaterMark(
                 srcFile = it[0],
                 waterMark = model.getWaterPath(),
-                resolution = "100x100",
-                bitRate = 100,
+                resolution = "720x1280",
+                bitRate = 1024,
                 targetFile = model.getWaterPathTarget()
             )
+            FFmpegUtils.logCmd(addWaterMarkCmdArr)
             FFmpegCmd.excute(FFmpegCmd.CmdTask(addWaterMarkCmdArr))
         }
     }
