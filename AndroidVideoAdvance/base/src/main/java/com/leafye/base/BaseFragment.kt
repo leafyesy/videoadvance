@@ -27,13 +27,20 @@ abstract class BaseFragment<VM : BaseViewModel<out BaseModel>, B : ViewDataBindi
 
     private lateinit var act: Activity
 
+    @Volatile
+    private var isCallPrepared: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initParam()
     }
 
     @Nullable
-    override fun onCreateView(inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        @Nullable container: ViewGroup?,
+        @Nullable savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
             initContentView(inflater, container, savedInstanceState),
@@ -53,12 +60,30 @@ abstract class BaseFragment<VM : BaseViewModel<out BaseModel>, B : ViewDataBindi
         setupObservers()
         //注册RxBus
         viewModel.registerRxBus()
-        fragmentPrepared()
+        activity?.let {
+            act = it
+            callFragmentPrepared()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.let { act = it }
+        activity?.let {
+            act = it
+            callFragmentPrepared()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isCallPrepared = false
+    }
+
+    private fun callFragmentPrepared() {
+        if (activity == null) return
+        if (isCallPrepared) return
+        fragmentPrepared()
+        isCallPrepared = true
     }
 
     fun getFragActivity(): Activity = act

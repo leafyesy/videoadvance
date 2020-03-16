@@ -92,5 +92,4 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         viewModel.refreshFilterItemList()
     }
 
-
 }

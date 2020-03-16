@@ -5,21 +5,15 @@ import androidx.lifecycle.ViewModel
 import com.leafye.base.VMProduct
 import com.leafye.base.ViewModelFactory
 import com.leafye.base.utils.Utils
-import com.leafye.ffmpegapp.model.AudioModel
-import com.leafye.ffmpegapp.model.MainFragModel
-import com.leafye.ffmpegapp.model.MainModel
-import com.leafye.ffmpegapp.model.VideoHandleModel
-import com.leafye.ffmpegapp.vm.AudiohandleVmProduct
-import com.leafye.ffmpegapp.vm.MainFragViewModelProduct
-import com.leafye.ffmpegapp.vm.MainViewModelProduct
-import com.leafye.ffmpegapp.vm.ViewHandleViewModelProduct
+import com.leafye.ffmpegapp.model.*
+import com.leafye.ffmpegapp.vm.*
 
 /**
  *
  * @ProjectName:    AndroidVideoAdvance
  * @Package:        com.leafye.ffmpegapp
  * @ClassName:      BaseApplication
- * @Description:     java类作用描述
+ * @Description:
  * @Author:         leafye
  * @CreateDate:     2020/3/5 15:19
  * @UpdateUser:
@@ -34,6 +28,7 @@ class BaseApplication : Application() {
             add(AudiohandleVmProduct(AudioModel()))
             add(MainFragViewModelProduct(MainFragModel()))
             add(ViewHandleViewModelProduct(VideoHandleModel()))
+            add(VideoPlayViewModelProduct(VideoPlayModel()))
         }
 
 

@@ -3,6 +3,7 @@ package com.leafye.ffmpegapp;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.view.Surface;
 
 /**
  * @ProjectName: AndroidVideoAdvance
@@ -54,6 +55,12 @@ public class YeFFmpeg {
     public native int openslPlayer(String input);
 
     public native int stopOpenslPlayer();
+
+    public native int play(String input, Object surface);
+
+    public native void setPlayRate(float playRate);
+
+
 
     /**
      * 创建一个AudioTrack对象

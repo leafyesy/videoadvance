@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ffmpegApp</string>
     <string name="audio_transform">AUDIO TRANSFORM</string>
     <string name="protocol">PROTOCOL</string>
@@ -29,19 +29,22 @@
     <string name="action_reply">Reply</string>
     <string name="stop_opensl_es_play">STOP OPENSL ES PLAY</string>
     <string name="video">VIDEO</string>
-    <string name="tran">tran</string>
-    <string name="cut">CUT</string>
-    <string name="shot">SHOT</string>
-    <string name="water">WATER</string>
-    <string name="gif">GIF</string>
-    <string name="record">RECORD</string>
-    <string name="combine">COMBINE</string>
-    <string name="multi">MULTI</string>
-    <string name="reverse">REVERSE</string>
-    <string name="denoise">DENOISE</string>
-    <string name="toimage">ToImage</string>
-    <string name="pip">PIP</string>
-    <string name="mov">MOV</string>
+    <string name="tran" tools:ignore="ExtraTranslation">tran</string>
+    <string name="cut" tools:ignore="ExtraTranslation">CUT</string>
+    <string name="shot" tools:ignore="ExtraTranslation">SHOT</string>
+    <string name="water" tools:ignore="ExtraTranslation">WATER</string>
+    <string name="gif" tools:ignore="ExtraTranslation">GIF</string>
+    <string name="record" tools:ignore="ExtraTranslation">RECORD</string>
+    <string name="combine" tools:ignore="ExtraTranslation">COMBINE</string>
+    <string name="multi" tools:ignore="ExtraTranslation">MULTI</string>
+    <string name="reverse" tools:ignore="ExtraTranslation">REVERSE</string>
+    <string name="denoise" tools:ignore="ExtraTranslation">DENOISE</string>
+    <string name="toimage" tools:ignore="ExtraTranslation">ToImage</string>
+    <string name="pip" tools:ignore="ExtraTranslation">PIP</string>
+    <string name="mov" tools:ignore="ExtraTranslation">MOV</string>
+    <string name="select">SELECT</string>
+    <string name="play">PLAY</string>
+    <string name="video_play">VIDEO PLAY</string>
 
 
 </resources>

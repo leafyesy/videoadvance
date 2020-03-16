@@ -2,6 +2,7 @@ package com.leafye.ffmpegapp.activity
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
@@ -33,5 +34,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             ?.let {
                 requestPermissions(this, arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), 1)
             }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

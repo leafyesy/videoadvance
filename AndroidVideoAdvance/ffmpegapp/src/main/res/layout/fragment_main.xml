@@ -36,5 +36,15 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/audioHandle" />
 
+        <Button
+            android:id="@+id/videoPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/video_play"
+            android:onClick="@{vm.btnVideoPlay}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videoHandle" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
