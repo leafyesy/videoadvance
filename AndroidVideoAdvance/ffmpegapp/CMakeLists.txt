@@ -19,6 +19,7 @@ add_library(yeffmpeg SHARED
         ${DIR}/src/main/cpp/ffmpeg_cmd.c
         ${DIR}/src/main/cpp/audio_play.c
         ${DIR}/src/main/cpp/openSL_audio_player.c
+        ${DIR}/src/main/cpp/video_player.c
         ${DIR}/src/main/cpp/com_leafye_ffmpegapp_YeFFmpeg.cpp)
 
 add_library(avffmpeg SHARED IMPORTED)
