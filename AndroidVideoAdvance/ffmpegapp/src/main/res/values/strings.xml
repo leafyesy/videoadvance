@@ -6,7 +6,7 @@
     <string name="codec">CODEC</string>
     <string name="filter">FILTER</string>
     <string name="audio">AUDIO</string>
-    <string name="ffmpeg_use">是否使用FFmpeg</string>
+    <string name="ffmpeg_use">是否使用FFmpegCmd</string>
     <string name="audio_cut">AUDIO CUT</string>
     <string name="audio_concat">AUDIO CONCAT</string>
     <string name="audio_mix">AUDIO MIX</string>
@@ -29,6 +29,19 @@
     <string name="action_reply">Reply</string>
     <string name="stop_opensl_es_play">STOP OPENSL ES PLAY</string>
     <string name="video">VIDEO</string>
+    <string name="tran">tran</string>
+    <string name="cut">CUT</string>
+    <string name="shot">SHOT</string>
+    <string name="water">WATER</string>
+    <string name="gif">GIF</string>
+    <string name="record">RECORD</string>
+    <string name="combine">COMBINE</string>
+    <string name="multi">MULTI</string>
+    <string name="reverse">REVERSE</string>
+    <string name="denoise">DENOISE</string>
+    <string name="toimage">ToImage</string>
+    <string name="pip">PIP</string>
+    <string name="mov">MOV</string>
 
 
 </resources>

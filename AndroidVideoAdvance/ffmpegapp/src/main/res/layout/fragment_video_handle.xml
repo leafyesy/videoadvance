@@ -17,7 +17,7 @@
             android:id="@+id/btnProtocol"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnProtocolClick}"
+            android:onClick="@{()->vm.btnClick(btnProtocol)}"
             android:text="@string/protocol"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btnFormat"
@@ -28,7 +28,7 @@
             android:id="@+id/btnFormat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnFormatClick}"
+            android:onClick="@{()->vm.btnClick(btnFormat)}"
             android:text="@string/format"
             app:layout_constraintLeft_toRightOf="@+id/btnProtocol"
             app:layout_constraintRight_toRightOf="@+id/btnCodec"
@@ -38,7 +38,7 @@
             android:id="@+id/btnCodec"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnCodecClick}"
+            android:onClick="@{()->vm.btnClick(btnCodec)}"
             android:text="@string/codec"
             app:layout_constraintLeft_toRightOf="@+id/btnFormat"
             app:layout_constraintRight_toLeftOf="@+id/btnFilter"
@@ -48,7 +48,7 @@
             android:id="@+id/btnFilter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnFilterClick}"
+            android:onClick="@{()->vm.btnClick(btnFilter)}"
             android:text="@string/filter"
             app:layout_constraintLeft_toRightOf="@+id/btnCodec"
             app:layout_constraintRight_toRightOf="parent"
@@ -58,8 +58,8 @@
             android:id="@+id/transform"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnTransformClick}"
-            android:text="tran"
+            android:onClick="@{()->vm.btnClick(transform)}"
+            android:text="@string/tran"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btnVideoCut"
@@ -70,8 +70,8 @@
             android:id="@+id/btnVideoCut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnVideoCutClick}"
-            android:text="CUT"
+            android:onClick="@{()->vm.btnClick(btnVideoCut)}"
+            android:text="@string/cut"
             app:layout_constraintLeft_toRightOf="@+id/transform"
             app:layout_constraintRight_toLeftOf="@+id/btnScreenShot"
             app:layout_constraintTop_toTopOf="@+id/transform" />
@@ -80,8 +80,8 @@
             android:id="@+id/btnScreenShot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnScreenShotClick}"
-            android:text="SHOT"
+            android:onClick="@{()->vm.btnClick(btnScreenShot)}"
+            android:text="@string/shot"
             app:layout_constraintLeft_toRightOf="@+id/btnVideoCut"
             app:layout_constraintRight_toLeftOf="@+id/addWater"
             app:layout_constraintTop_toTopOf="@+id/transform" />
@@ -90,11 +90,113 @@
             android:id="@+id/addWater"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.addWaterClick}"
-            android:text="WATER"
+            android:onClick="@{()->vm.btnClick(addWater)}"
+            android:text="@string/water"
             app:layout_constraintLeft_toRightOf="@+id/btnScreenShot"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/transform" />
+
+        <Button
+            android:id="@+id/generateGif"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(generateGif)}"
+            android:text="@string/gif"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/recordScreen"
+            app:layout_constraintTop_toBottomOf="@+id/transform" />
+
+        <Button
+            android:id="@+id/recordScreen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(recordScreen)}"
+            android:text="@string/record"
+            app:layout_constraintLeft_toRightOf="@+id/generateGif"
+            app:layout_constraintRight_toLeftOf="@+id/combineVideo"
+            app:layout_constraintTop_toBottomOf="@+id/transform" />
+
+        <Button
+            android:id="@+id/combineVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(combineVideo)}"
+            android:text="@string/combine"
+            app:layout_constraintLeft_toRightOf="@+id/recordScreen"
+            app:layout_constraintRight_toLeftOf="@+id/multiVideo"
+            app:layout_constraintTop_toBottomOf="@+id/transform" />
+
+        <Button
+            android:id="@+id/multiVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(multiVideo)}"
+            android:text="@string/multi"
+            app:layout_constraintLeft_toRightOf="@+id/combineVideo"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/transform" />
+
+        <Button
+            android:id="@+id/reverseVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(reverseVideo)}"
+            android:text="@string/reverse"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/denoiseVideo"
+            app:layout_constraintTop_toBottomOf="@+id/generateGif" />
+
+        <Button
+            android:id="@+id/denoiseVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(denoiseVideo)}"
+            android:text="@string/denoise"
+            app:layout_constraintLeft_toRightOf="@+id/reverseVideo"
+            app:layout_constraintRight_toLeftOf="@+id/toImageVideo"
+            app:layout_constraintTop_toBottomOf="@+id/generateGif" />
+
+        <Button
+            android:id="@+id/toImageVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(toImageVideo)}"
+            android:text="@string/toimage"
+            app:layout_constraintLeft_toRightOf="@+id/denoiseVideo"
+            app:layout_constraintRight_toLeftOf="@+id/pipVideo"
+            app:layout_constraintTop_toBottomOf="@+id/generateGif" />
+
+        <Button
+            android:id="@+id/pipVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(pipVideo)}"
+            android:text="@string/pip"
+            app:layout_constraintLeft_toRightOf="@+id/toImageVideo"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/generateGif" />
+
+        <Button
+            android:id="@+id/movVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnClick(movVideo)}"
+            android:text="@string/mov"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reverseVideo" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -112,6 +214,15 @@
             </LinearLayout>
 
         </ScrollView>
+
+        <CheckBox
+            android:id="@+id/useFFmpeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/ffmpeg_use"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

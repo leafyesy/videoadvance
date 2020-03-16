@@ -1,5 +1,6 @@
 package com.leafye.ffmpegapp
 
+import android.util.Log
 import java.util.*
 
 /**
@@ -131,7 +132,7 @@ class FFmpegUtils {
         /**
          * 使用ffmpeg命令行进行视频截图
          */
-        fun sreenShot(
+        fun screenShot(
             srcFile: String,
             time: Int,
             targetFile: String
@@ -151,8 +152,8 @@ class FFmpegUtils {
             targetFile: String
         ): Array<String> {
             val bitRateStr = "${bitRate}k"
-            val cmd = "ffmpeg -i %s -i %s -s %s -s %s -b:v %s -filter_complex overlay=0:0 %s"
-            return String.format(cmd, srcFile, targetFile, waterMark, resolution, bitRateStr)
+            val cmd = "ffmpeg -i %s -i %s -s %s -b:v %s -filter_complex overlay=0:0 %s"
+            return String.format(cmd, srcFile, waterMark, resolution, bitRateStr, targetFile)
                 .splitToArray()
         }
 
@@ -189,7 +190,8 @@ class FFmpegUtils {
         /**
          * 使用ffmpeg命令行进行屏幕录制
          */
-        fun sreenRecord(
+
+        fun screenRecord(
             size: String,
             recordTime: Int,
             targetFile: String
@@ -286,8 +288,10 @@ class FFmpegUtils {
             targetFile: String
         ): Array<String> {
             val cmd = "ffmpeg -i %s -ss %s -t %s -r %s %s"
-            return String.format(cmd, inputFile, startTime, duration, frameRate, targetFile)
-                .splitToArray()
+            String.format(cmd, inputFile, startTime, duration, frameRate, targetFile)
+                .also {
+                    return "$it%3d.jpg".splitToArray()
+                }
         }
 
         /**
@@ -321,6 +325,12 @@ class FFmpegUtils {
         fun probeFormat(inputFile: String): Array<String> {
             val cmd = "ffprobe -i %s -show_streams -show_format -print_format json"
             return String.format(Locale.getDefault(), cmd, inputFile).splitToArray()
+        }
+
+        fun logCmd(cmdArr: Array<String>) {
+            Log.i("FFmpegCmd", StringBuilder().apply {
+                cmdArr.forEach { append(it).append(" ") }
+            }.toString())
         }
 
 

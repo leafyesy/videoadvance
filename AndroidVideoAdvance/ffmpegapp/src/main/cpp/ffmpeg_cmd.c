@@ -20,6 +20,7 @@ Java_com_leafye_ffmpegapp_YeFFmpeg_handle
     for (i = 0; i < argc; i++) {
         jstring jstr = (jstring) (*env)->GetObjectArrayElement(env, cmdArr, i);
         char *temp = (char *) (*env)->GetStringUTFChars(env, jstr, 0);
+        ALOGI("handle cmd %s  %d", temp, i);
         argv[i] = malloc(1024);
         strcpy(argv[i], temp);
         (*env)->ReleaseStringUTFChars(env, jstr, temp);
