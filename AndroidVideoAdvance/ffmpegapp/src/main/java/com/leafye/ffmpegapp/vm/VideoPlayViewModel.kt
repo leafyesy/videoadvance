@@ -31,7 +31,7 @@ class VideoPlayViewModel(model: VideoPlayModel) : BaseViewModel<VideoPlayModel>(
 
     fun setSelectVideoPath(path: String) {
         pathStr = path
-        enablePlay = TextUtils.isEmpty(path) && File(path).exists()
+        enablePlay = !TextUtils.isEmpty(path) && File(path).exists()
     }
 }
 

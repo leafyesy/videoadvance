@@ -77,7 +77,8 @@ class ContentUtils {
                 cursor =
                     context.contentResolver.query(uri, projection, selection, selectionArgs, null)
                 cursor?.apply {
-                    return getString(getColumnIndexOrThrow(column))
+                    if (cursor.moveToFirst())
+                        return getString(getColumnIndexOrThrow(column))
                 }
             } finally {
                 cursor?.close()
