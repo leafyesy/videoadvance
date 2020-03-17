@@ -65,4 +65,7 @@ class VideoHandleModel : BaseModel {
 
     fun toImagePathPrefix() =
         FFmpegTestFileManager.basePath() + "/toImage"
+
+    fun pipPath() =
+        FFmpegTestFileManager.basePath() + "/pip.mp4"
 }

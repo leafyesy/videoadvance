@@ -45,9 +45,7 @@ class VideoHandleFragment : BaseFragment<VideoHandleViewModel, FragmentVideoHand
     ) = R.layout.fragment_video_handle
 
     override fun setupObservers() {
-        viewModel.resultLiveData.observe(this@VideoHandleFragment, Observer {
-            handleResult(it)
-        })
+        viewModel.resultLiveData.observe(this, Observer { handleResult(it) })
     }
 
     private fun handleResult(it: Result) {

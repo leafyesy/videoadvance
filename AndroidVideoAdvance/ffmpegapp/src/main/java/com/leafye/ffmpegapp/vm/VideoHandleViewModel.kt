@@ -189,7 +189,15 @@ class VideoHandleViewModel(model: VideoHandleModel) : BaseViewModel<VideoHandleM
     }
 
     private fun pipVideoClick() {
-
+        checkPath(model.srcVideoPath(), model.srcVideoPath2())?.let {
+            //x、y坐标点需要根据全屏视频与小视频大小，进行计算
+            //比如：全屏视频为320x240，小视频为120x90，那么x=200 y=150
+            val x = 200
+            val y = 150
+            val picInPicVideoCmdArr =
+                FFmpegUtils.picInPicVideo(it[0], it[1], x, y, model.pipPath())
+            FFmpegCmd.excute(FFmpegCmd.CmdTask(picInPicVideoCmdArr, excuteCallback))
+        }
     }
 
     private fun movVideoClick() {

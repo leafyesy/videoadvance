@@ -1,10 +1,11 @@
 package com.leafye.ffmpegapp.vm
 
 import android.text.TextUtils
+import android.widget.Toast
 import com.leafye.base.BaseViewModel
 import com.leafye.base.VMProduct
+import com.leafye.base.livedata.CallLiveData
 import com.leafye.ffmpegapp.model.VideoPlayModel
-import java.io.File
 
 /**
  *
@@ -20,18 +21,32 @@ import java.io.File
  */
 class VideoPlayViewModel(model: VideoPlayModel) : BaseViewModel<VideoPlayModel>(model) {
 
+    companion object{
+        private const val DEF_STR = "界面加载完成,请选择播放文件"
+    }
+
     var pathStr = ""
-    var enableSelect: Boolean = false
-    var enablePlay = false
+    //var enableSelect: Boolean = false
+    //var enablePlay = false
+
+    val playEvent = CallLiveData()
 
     fun uiPrepareSuccess() {
-        pathStr = "界面加载完成,请选择播放文件"
-        enableSelect = true
+        //pathStr = DEF_STR
+        //enableSelect = true
     }
 
     fun setSelectVideoPath(path: String) {
         pathStr = path
-        enablePlay = !TextUtils.isEmpty(path) && File(path).exists()
+        //enablePlay = !TextUtils.isEmpty(path) && File(path).exists()
+    }
+
+    fun playClick(){
+        if (TextUtils.isEmpty(pathStr)|| pathStr == DEF_STR){
+            Toast.makeText(getApplication(),"请选择播放文件",Toast.LENGTH_SHORT).show()
+            return
+        }
+        playEvent.call()
     }
 }
 

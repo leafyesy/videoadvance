@@ -9,16 +9,19 @@ import android.view.LayoutInflater
 import android.view.Surface
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.leafye.base.BaseFragment
 import com.leafye.ffmpegapp.BR
 import com.leafye.ffmpegapp.R
+import com.leafye.ffmpegapp.YeFFmpeg
 import com.leafye.ffmpegapp.baseNavOptions
 import com.leafye.ffmpegapp.databinding.FragmentVideoPlayBinding
 import com.leafye.ffmpegapp.utils.ContentUtils
 import com.leafye.ffmpegapp.view.VideoSurfaceView
 import com.leafye.ffmpegapp.vm.VideoPlayViewModel
 import kotlinx.android.synthetic.main.fragment_video_play.*
+import kotlin.concurrent.thread
 
 /**
  *
@@ -63,11 +66,15 @@ class VideoPlayFragment : BaseFragment<VideoPlayViewModel, FragmentVideoPlayBind
     }
 
     override fun setupObservers() {
+        viewModel.playEvent.observe(this, Observer {
+            thread {
+                YeFFmpeg.instance().play(viewModel.pathStr, surfaceView.surface)
+            }
+        })
     }
 
     override fun fragmentPrepared() {
         getFragActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        surfaceFL.addView(surfaceView)
         selectVideo.setOnClickListener {
             selectVideoPath()
         }
@@ -91,9 +98,20 @@ class VideoPlayFragment : BaseFragment<VideoPlayViewModel, FragmentVideoPlayBind
                     Log.d(TAG, "filePath:$it")
                 }.apply {
                     viewModel.setSelectVideoPath(this)
+                    surfaceFL.removeAllViews()
+                    surfaceFL.addView(surfaceView)
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 
     override fun onDestroy() {
