@@ -20,7 +20,7 @@
             android:id="@+id/audioHandle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnAudioHandle}"
+            android:onClick="@{()->vm.btnAudioHandle()}"
             android:text="@string/audio"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -30,7 +30,7 @@
             android:id="@+id/videoHandle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{vm.btnVideoHandle}"
+            android:onClick="@{()->vm.btnVideoHandle()}"
             android:text="@string/video"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -40,11 +40,21 @@
             android:id="@+id/videoPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnVideoPlay()}"
             android:text="@string/video_play"
-            android:onClick="@{vm.btnVideoPlay}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/videoHandle" />
+
+        <Button
+            android:id="@+id/mediaPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.btnMediaPlay()}"
+            android:text="MEDIA"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videoPlay" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

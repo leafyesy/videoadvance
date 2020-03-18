@@ -14,6 +14,10 @@
     JNIEXPORT RETURN_TYPE JNICALL Java_com_leafye_ffmpegapp_YeFFmpeg_ ## FUNC_NAME \
     (JNIEnv *env, jobject thiz, ##__VA_ARGS__)\
 
+#define MEDIA_PLAYER_FUNC(RETURN_TYPE, FUNC_NAME, ...) \
+    JNIEXPORT RETURN_TYPE JNICALL Java_com_leafye_ffmpegapp_YeFFmpeg_ ## FUNC_NAME \
+    (JNIEnv *env, jobject thiz, ##__VA_ARGS__)\
+
 #endif //ANDROIDVIDEOADVANCE_COMMON_H
 
 

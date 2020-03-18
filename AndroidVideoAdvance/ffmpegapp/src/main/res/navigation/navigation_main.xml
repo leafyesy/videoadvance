@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_mainFragment_to_videoPlayFragment"
             app:destination="@id/videoPlayFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_cMediaFragment"
+            app:destination="@id/cMediaFragment" />
     </fragment>
     <fragment
         android:id="@+id/audioHandleFragment"
@@ -30,5 +33,10 @@
     <fragment
         android:id="@+id/videoPlayFragment"
         android:name="com.leafye.ffmpegapp.fragment.VideoPlayFragment"
-        android:label="VideoPlayFragment"/>
+        android:label="VideoPlayFragment" />
+
+    <fragment
+        android:id="@+id/cMediaFragment"
+        android:name="com.leafye.ffmpegapp.fragment.CMediaFragment"
+        android:label="CMediaFragment" />
 </navigation>

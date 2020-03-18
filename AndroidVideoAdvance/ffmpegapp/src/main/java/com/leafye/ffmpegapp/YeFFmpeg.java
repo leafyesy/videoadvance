@@ -73,7 +73,15 @@ public class YeFFmpeg {
 
     public native int videoStop();
 
-    //--------------------------------------------------
+    public native int filter(String input, Object surface, String filter);
+
+    //Media--------------------------------------------------
+
+    public native int setupMedia(String input, Object surface);
+
+    public native int playMedia();
+
+    public native int releaseMedia();
 
     /**
      * 创建一个AudioTrack对象

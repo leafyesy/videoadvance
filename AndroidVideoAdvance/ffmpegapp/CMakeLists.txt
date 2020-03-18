@@ -17,9 +17,12 @@ add_library(yeffmpeg SHARED
         ${DIR}/src/main/cpp/include/ffmpeg/ffmpeg_opt.c
         ${DIR}/src/main/cpp/include/ffmpeg/ffprobe.c
         ${DIR}/src/main/cpp/ffmpeg_cmd.c
+        ${DIR}/src/main/cpp/AVpacket_queue.c
         ${DIR}/src/main/cpp/audio_play.c
         ${DIR}/src/main/cpp/openSL_audio_player.c
+        ${DIR}/src/main/cpp/video_filter.c
         ${DIR}/src/main/cpp/video_player.c
+        ${DIR}/src/main/cpp/media_player.c
         ${DIR}/src/main/cpp/com_leafye_ffmpegapp_YeFFmpeg.cpp)
 
 add_library(avffmpeg SHARED IMPORTED)

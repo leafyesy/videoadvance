@@ -30,16 +30,22 @@ class MainFragViewModel(model: MainFragModel) : BaseViewModel<MainFragModel>(mod
 
     val enterVideoPlayEvent = CallLiveData()
 
-    fun btnAudioHandle(view: View) {
+    val enterMeidaPlayEvent = CallLiveData()
+
+    fun btnAudioHandle() {
         enterAudioHandleEvent.call()
     }
 
-    fun btnVideoHandle(view: View) {
+    fun btnVideoHandle() {
         enterVideoHandleEvent.call()
     }
 
-    fun btnVideoPlay(view: View) {
+    fun btnVideoPlay() {
         enterVideoPlayEvent.call()
+    }
+
+    fun btnMediaPlay() {
+        enterMeidaPlayEvent.call()
     }
 }
 

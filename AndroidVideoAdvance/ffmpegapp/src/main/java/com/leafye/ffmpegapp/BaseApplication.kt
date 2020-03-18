@@ -29,6 +29,7 @@ class BaseApplication : Application() {
             add(MainFragViewModelProduct(MainFragModel()))
             add(ViewHandleViewModelProduct(VideoHandleModel()))
             add(VideoPlayViewModelProduct(VideoPlayModel()))
+            add(CMediaViewModelProduct(CMediaModel()))
         }
 
 
