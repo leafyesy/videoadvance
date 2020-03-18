@@ -9,7 +9,7 @@ import android.view.Surface;
  * @ProjectName: AndroidVideoAdvance
  * @Package: com.leafye.ffmpegapp
  * @ClassName: YeFFmpeg
- * @Description: java类作用描述
+ * @Description:音视频开发Api封装Demo
  * @Author: leafye
  * @CreateDate: 2020/2/21 15:14
  * @UpdateUser:
@@ -37,6 +37,7 @@ public class YeFFmpeg {
         }
         return yeFFmpeg;
     }
+    //-----------------------一些FFmpeg方法封装
 
     public native void decode(String input, String output);
 
@@ -48,7 +49,11 @@ public class YeFFmpeg {
 
     public native String urlprotocolinfo();
 
+    //执行FFmpeg命令行工具
+
     public native static int handle(String[] cmd);
+
+    //音频播放------------------------------------------
 
     public native int ffmpegPlay(String input);
 
@@ -56,11 +61,19 @@ public class YeFFmpeg {
 
     public native int stopOpenslPlayer();
 
+    //视频播放-------------------------------------------
+
     public native int play(String input, Object surface);
 
     public native void setPlayRate(float playRate);
 
+    public native int videoPause();
 
+    public native int videoResume();
+
+    public native int videoStop();
+
+    //--------------------------------------------------
 
     /**
      * 创建一个AudioTrack对象

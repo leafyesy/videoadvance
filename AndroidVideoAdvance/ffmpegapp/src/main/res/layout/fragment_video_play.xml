@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@android:color/black"
         android:orientation="vertical">
 
         <FrameLayout
@@ -27,8 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{vm.pathStr}"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/selectVideo" />
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="home" />
 
         <Button
             android:id="@+id/selectVideo"
@@ -47,6 +48,33 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/selectVideo"
             tools:enabled="false" />
+
+        <Button
+            android:id="@+id/videoPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.pauseClick()}"
+            android:text="pause"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/play" />
+
+        <Button
+            android:id="@+id/videoResume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.resumeClick()}"
+            android:text="resume"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/videoPause" />
+
+        <Button
+            android:id="@+id/videoStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->vm.stopClick()}"
+            android:text="stop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/videoResume" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

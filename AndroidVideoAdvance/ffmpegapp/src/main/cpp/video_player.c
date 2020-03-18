@@ -18,7 +18,11 @@
 long duration;
 float play_rate = 1;//播放速度
 
+int isPause = 0;
+int isStop = 0;
+
 VIDEO_PLAYER_FUNC(jint, play, jstring filePath, jobject surface) {
+    isStop = 0;
     const char *file_name = (*env)->GetStringUTFChars(env, filePath, JNI_FALSE);
     ALOGI("file path:%s", file_name);
     av_register_all();
@@ -98,37 +102,33 @@ VIDEO_PLAYER_FUNC(jint, play, jstring filePath, jobject surface) {
     int frameFinished;
     AVPacket packet;
     while (av_read_frame(pFormatCtx, &packet) >= 0) {
-        if (packet.stream_index == video_stream) {
-            avcodec_decode_video2(pCodecCtx, pFrame, &frameFinished, &packet);
-            if (frameFinished) {
-                // lock native window
-                ANativeWindow_lock(nativeWindow, &windowBuffer, 0);
-                sws_scale(sws_ctx, (uint8_t const *const *) pFrame->data, pFrame->linesize, 0,
-                          pCodecCtx->height,
-                          pFrameRGBA->data, pFrameRGBA->linesize);
-                uint8_t *dst = windowBuffer.bits;
-                int dstStride = windowBuffer.stride * 4;
-                uint8_t *src = pFrameRGBA->data[0];
-                int srcStride = pFrameRGBA->linesize[0];
-                // 由于window的stride和帧的stride不同,因此需要逐行复制
-                for (int h = 0; h < video_height; h++) {
-                    memcpy(dst + h * dstStride, src + h * srcStride, (size_t) srcStride);
+        if (isStop == 1) break;
+        if (isPause == 0) {
+            if (packet.stream_index == video_stream) {
+                avcodec_decode_video2(pCodecCtx, pFrame, &frameFinished, &packet);
+                if (frameFinished) {
+                    // lock native window
+                    ANativeWindow_lock(nativeWindow, &windowBuffer, 0);
+                    sws_scale(sws_ctx, (uint8_t const *const *) pFrame->data, pFrame->linesize, 0,
+                              pCodecCtx->height,
+                              pFrameRGBA->data, pFrameRGBA->linesize);
+                    uint8_t *dst = windowBuffer.bits;
+                    int dstStride = windowBuffer.stride * 4;
+                    uint8_t *src = pFrameRGBA->data[0];
+                    int srcStride = pFrameRGBA->linesize[0];
+                    // 由于window的stride和帧的stride不同,因此需要逐行复制
+                    for (int h = 0; h < video_height; h++) {
+                        memcpy(dst + h * dstStride, src + h * srcStride, (size_t) srcStride);
+                    }
+                    ANativeWindow_unlockAndPost(nativeWindow);
                 }
-//                uint8_t *dst = windowBuffer.bits;
-//                int dstStride = windowBuffer.stride * 4;
-//                uint8_t *src = pFrameRGBA->data[0];
-//                int srcStride = pFrameRGBA->linesize[0];
-//                // 由于window的stride和帧的stride不同,因此需要逐行复制
-//                int h;
-//                for (h = 0; h < video_height; h++) {
-//                    memcpy(dst + h * dstStride, src + h * srcStride, (size_t) srcStride);
-//                }
-                ANativeWindow_unlockAndPost(nativeWindow);
+                //延迟等待
+                usleep((unsigned long) (1000 * 40 * play_rate));
             }
-            //延迟等待
+            av_packet_unref(&packet);
+        } else {
             usleep((unsigned long) (1000 * 40 * play_rate));
         }
-        av_packet_unref(&packet);
     }
     //释放一切
     av_free(buffer);
@@ -136,6 +136,21 @@ VIDEO_PLAYER_FUNC(jint, play, jstring filePath, jobject surface) {
     av_free(pFrameRGBA);
     avcodec_close(pCodecCtx);
     avformat_close_input(&pFormatCtx);
+    return 0;
+}
+
+VIDEO_PLAYER_FUNC(jint, videoPause) {
+    isPause = 1;
+    return 0;
+}
+
+VIDEO_PLAYER_FUNC(jint, videoResume) {
+    isPause = 0;
+    return 0;
+}
+
+VIDEO_PLAYER_FUNC(jint, videoStop) {
+    isStop = 1;
     return 0;
 }
 

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Surface
 import android.view.ViewGroup
+import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -59,7 +60,6 @@ class VideoPlayFragment : BaseFragment<VideoPlayViewModel, FragmentVideoPlayBind
             callback = object : VideoSurfaceView.Callback {
                 override fun surfaceCreated(surface: Surface) {
                     Log.d(TAG, "uiPrepareSuccess")
-                    viewModel.uiPrepareSuccess()//界面准备完毕
                 }
             }
         }
@@ -68,7 +68,7 @@ class VideoPlayFragment : BaseFragment<VideoPlayViewModel, FragmentVideoPlayBind
     override fun setupObservers() {
         viewModel.playEvent.observe(this, Observer {
             thread {
-                YeFFmpeg.instance().play(viewModel.pathStr, surfaceView.surface)
+                YeFFmpeg.instance().play(viewModel.pathStr.value, surfaceView.surface)
             }
         })
     }
@@ -97,6 +97,7 @@ class VideoPlayFragment : BaseFragment<VideoPlayViewModel, FragmentVideoPlayBind
                 ContentUtils.getPath(getFragActivity(), d).also {
                     Log.d(TAG, "filePath:$it")
                 }.apply {
+                    //pathTv.text = this
                     viewModel.setSelectVideoPath(this)
                     surfaceFL.removeAllViews()
                     surfaceFL.addView(surfaceView)

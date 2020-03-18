@@ -80,6 +80,7 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>, B : ViewDataBindi
         }
         //关联ViewModel
         binding.setVariable(viewModelId, viewModel)
+        binding.lifecycleOwner = this
         //让ViewModel拥有View的生命周期感应
         lifecycle.addObserver(viewModel)
         //注入RxLifecycle生命周期
