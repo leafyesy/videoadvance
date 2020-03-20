@@ -39,56 +39,91 @@
 #define ERROR_MALLOC_PLAYER -10
 #define ERROR_DECODE_VIDEO2 -10000000
 
-
+//当前时间
 struct timeval now;
 struct timespec timeout;
-
+/**
+ * 播放器
+ */
 typedef struct MediaPlayer {
+    //音视频文件上下文
     AVFormatContext *format_context;
+    //视频文件流的位置
     int video_stream_index;
+    //音频文件流的位置
     int audio_stream_index;
+    //视频编解码器上下文
     AVCodecContext *video_codec_context;
+    //音频编解码器上下文
     AVCodecContext *audio_codec_context;
 
+    //视频编解码器
     AVCodec *video_codec;
+    //音频编解码器
     AVCodec *audio_codec;
 
+    //Android window
     ANativeWindow *native_window;
+
+    //缓存
     uint8_t *buffer;
 
+    //视频原始数据 yuv
     AVFrame *yuv_frame;
+    //视频原始数据 rgba
     AVFrame *rgba_frame;
 
+    //视频宽
     int video_width;
+    //视频高
     int video_height;
 
+    //重采样 上下文
     SwrContext *swr_context;
 
+    //输出的channel
     int out_channel_nb;
+    //输出的采样率
     int out_sample_rate;
+    //输出的采样格式
     enum AVSampleFormat out_sample_fmt;
+    //音频播放器对象 使用AudioTrack
     jobject audio_track;
+    //AudioTrack写入的java方法对象
     jmethodID audio_track_write_mid;
+    //音频缓存
     uint8_t *audio_buffer;
-
+    //音频原始数据
     AVFrame *audio_frame;
+    //
     AVPacketQueue *packets[2];
+    //线程互斥锁
     pthread_mutex_t mutex;
+    //线程条件变量
     pthread_cond_t cond;
+    //开始时间
     int64_t start_time;
+    //音频时钟
     int64_t audio_clock;
+    //写入线程
     pthread_t write_thread;
+    //视频线程
     pthread_t video_thread;
+    //音频线程
     pthread_t audio_thread;
 
 } MediaPlayer;
 
+/**
+ * 解码器
+ */
 typedef struct Decoder {
     MediaPlayer *player;
     int stream_index;
 } Decoder;
-
+//java虚拟机对象
 JavaVM *javaVm;
+
 MediaPlayer *player;
 
 jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
@@ -96,6 +131,12 @@ jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     return JNI_VERSION_1_6;
 }
 
+//初始化输入文件
+//1.注册所有的组件
+//2.创建formatContext
+//3.打开输入的文件
+//4.寻找流文件
+//5.定位音频/视频流
 int init_input_format_context(MediaPlayer *player, const char *file_name) {
     av_register_all();
     player->format_context = avformat_alloc_context();
@@ -134,6 +175,16 @@ int init_input_format_context(MediaPlayer *player, const char *file_name) {
 }
 
 //音视频解码器
+//一.视频
+//1.从视频流中获取编解码器
+//2.根据获取的视频编解码器寻找解码器对象
+//3.尝试打开视频解码器
+//二.音频
+//1.从音频流中获取编解码器
+//2.根据获取的音频编解码器寻找解码器对象
+//3.尝试打开音频解码器
+//三.other
+//视频的宽高
 int init_condec_context(MediaPlayer *player) {
     player->video_codec_context = player->format_context->streams[player->video_stream_index]->codec;
     player->video_codec = avcodec_find_decoder(player->video_codec_context->codec_id);
@@ -161,21 +212,29 @@ int init_condec_context(MediaPlayer *player) {
     return 0;
 }
 
+//初始化ANativeWindow
 void video_player_prepare(MediaPlayer *player, JNIEnv *env, jobject surface) {
     player->native_window = ANativeWindow_fromSurface(env, surface);
 }
 
+//获取播放时长
 int64_t get_play_time(MediaPlayer *player) {
     return av_gettime() - player->start_time;
 }
 
 //音视频同步
+//就是音频快了 等视频 视频快了 等音频
+//1.加锁
+//2.开启循环
+//  1.获取视频播放的时间
+//  2.根据传入的时间确定休眠时间??
+//  3.如果时间小于300ms
 void player_wait_for_frame(MediaPlayer *player, int64_t stream_time) {
     pthread_mutex_lock(&player->mutex);
     for (;;) {
         int64_t current_video_time = get_play_time(player);
         int64_t sleep_time = stream_time - current_video_time;
-        if (sleep_time < -300000ll) {
+        if (sleep_time < -300000ll) {//300ms
             int64_t new_value = player->start_time - sleep_time;
             player->start_time = new_value;
             pthread_cond_broadcast(&player->cond);
@@ -195,6 +254,12 @@ void player_wait_for_frame(MediaPlayer *player, int64_t stream_time) {
 }
 
 //视频解码
+//1.初始化yuv/rgba frame
+//2.获取缓存的大小 并 初始化缓存
+//3.填充AVFrame数据缓冲
+//4.获取转换的上下文
+//5.解码视频文件
+//6.显示
 int decode_video(MediaPlayer *player, AVPacket *packet) {
     ANativeWindow_setBuffersGeometry(player->native_window,
                                      player->video_width,
@@ -212,6 +277,7 @@ int decode_video(MediaPlayer *player, AVPacket *packet) {
                                              player->video_height,
                                              1);
     player->buffer = av_malloc(num_bytes * sizeof(uint8_t));
+
     av_image_fill_arrays(player->rgba_frame->data,
                          player->rgba_frame->linesize,
                          player->buffer,
@@ -237,42 +303,67 @@ int decode_video(MediaPlayer *player, AVPacket *packet) {
         LOGE("avcodec decode video2 error... ret:%d", ret);
         return ERROR_DECODE_VIDEO2 + ret;
     }
-
+    //6.显示
     if (frame_finished) {
+        //1.锁定显示
         ANativeWindow_lock(player->native_window, &window_buffer, 0);
+        //2.转换一帧图像 yuv->rgba
         sws_scale(sws_ctx, player->yuv_frame->data, player->yuv_frame->linesize, 0,
                   player->video_height, player->rgba_frame->data, player->rgba_frame->linesize);
-        uint8_t *dst = window_buffer.bits;
-        int dstStride = window_buffer.stride * 4;
-        uint8_t *src = player->rgba_frame->data[0];
-        int srcStride = player->rgba_frame->linesize[0];
+
+        uint8_t *dst = window_buffer.bits;//目标数据地址
+        int dstStride = window_buffer.stride * 4;//步长
+        uint8_t *src = player->rgba_frame->data[0];//源数据数组头地址
+        int srcStride = player->rgba_frame->linesize[0];//For video, size in bytes of each picture line.
+        //拷贝
         for (int h = 0; h < player->video_height; ++h) {
+            //memcpy c/c++中使用的内存拷贝函数
             memcpy(dst + h * dstStride, src + h * srcStride, (size_t) srcStride);
         }
+        //计算延迟
+        //获取 AVFrame中的best_effort_timestamp
         int64_t pts = av_frame_get_best_effort_timestamp(player->yuv_frame);
         AVStream *stream = player->format_context->streams[player->video_stream_index];
+        //转换（不同时间基时间转换）
         int64_t time = av_rescale_q(pts, stream->time_base, AV_TIME_BASE_Q);
+        //音视频同步
         player_wait_for_frame(player, time);
         ANativeWindow_unlockAndPost(player->native_window);
     }
     return 0;
 }
 
+/**
+ *
+ * 音频解码准备
+ */
 void audio_decoder_prepare(MediaPlayer *player) {
     player->swr_context = swr_alloc();
+    //根据MediaPlayer中存储的数据获取输入和输出的音频各种参数
     enum AVSampleFormat in_sample_fmt = player->audio_codec_context->sample_fmt;
     player->out_sample_fmt = AV_SAMPLE_FMT_S16;
     int in_sample_rate = player->audio_codec_context->sample_rate;
     player->out_sample_rate = in_sample_rate;
     uint64_t in_ch_layout = player->audio_codec_context->channel_layout;
     uint64_t out_ch_layout = AV_CH_LAYOUT_STEREO;
+    //设置参数
     swr_alloc_set_opts(player->swr_context,
                        out_ch_layout, player->out_sample_fmt, player->out_sample_rate,
                        in_ch_layout, in_sample_fmt, in_sample_rate, 0, NULL);
+    //初始化
     swr_init(player->swr_context);
+    //修改player中的channel
     player->out_channel_nb = av_get_channel_layout_nb_channels(out_ch_layout);
 }
 
+/**
+ * 音频播放准备
+ * 主要是准备AudioTrack和write方法
+ * @param player
+ * @param env
+ * @param jthiz
+ * @return
+ */
 int audio_player_prepare(MediaPlayer *player, JNIEnv *env, jclass jthiz) {
     jclass player_class = (*env)->GetObjectClass(env, jthiz);
     if (!player_class) {
@@ -296,6 +387,12 @@ int audio_player_prepare(MediaPlayer *player, JNIEnv *env, jclass jthiz) {
     player->audio_frame = av_frame_alloc();
 }
 
+/**
+ * 解码audio
+ * @param player
+ * @param packet
+ * @return
+ */
 int decode_audio(MediaPlayer *player, AVPacket *packet) {
     int got_frame = 0, ret;
     ret = avcodec_decode_audio4(player->audio_codec_context,
@@ -307,19 +404,23 @@ int decode_audio(MediaPlayer *player, AVPacket *packet) {
         return -1;
     }
     if (got_frame > 0) {
+        //转换格式
         swr_convert(player->swr_context, &player->audio_buffer,
                     MAX_AUDIO_FRAME_SIZE,
                     (const uint8_t **) player->audio_frame->data,
                     player->audio_frame->nb_samples);
+        //获取缓存size
         int out_buffer_size = av_samples_get_buffer_size(NULL, player->out_channel_nb,
                                                          player->audio_frame->nb_samples,
                                                          player->out_sample_fmt, 1);
+        //音视频同步
         int64_t pts = packet->pts;
         if (pts != AV_NOPTS_VALUE) {
             AVStream *stream = player->format_context->streams[player->audio_stream_index];
             player->audio_clock = av_rescale_q(pts, stream->time_base, AV_TIME_BASE_Q);
             player_wait_for_frame(player, player->audio_clock + AUDIO_TIME_ADJUST_US);
         }
+        //组装数据 并 写入AudioTrack中
         if (javaVm != NULL) {
             JNIEnv *env;
             (*javaVm)->AttachCurrentThread(javaVm, &env, NULL);
@@ -339,7 +440,7 @@ int decode_audio(MediaPlayer *player, AVPacket *packet) {
     return 0;
 }
 
-
+//初始化queue
 void init_queue(MediaPlayer *player, int size) {
     for (int i = 0; i < 2; ++i) {
         AVPacketQueue *queue = queue_init(size);
@@ -347,12 +448,14 @@ void init_queue(MediaPlayer *player, int size) {
     }
 }
 
+//删除queue
 void delete_queue(MediaPlayer *player) {
     for (int i = 0; i < 2; ++i) {
         queue_free(player->packets[i]);
     }
 }
 
+//读取AVPacket线程(生产者)
 void *write_packet_to_queue(void *arg) {
     MediaPlayer *player = (MediaPlayer *) arg;
     AVPacket packet, *pkt = &packet;
@@ -364,10 +467,12 @@ void *write_packet_to_queue(void *arg) {
         }
         if (pkt->stream_index == player->video_stream_index ||
             pkt->stream_index == player->audio_stream_index) {
+            //根据AVPacket->stream_index获取对应的队列
             AVPacketQueue *queue = player->packets[pkt->stream_index];
             pthread_mutex_lock(&player->mutex);
             AVPacket *data = queue_push(queue, &player->mutex, &player->cond);
             pthread_mutex_unlock(&player->mutex);
+            //拷贝（间接赋值，拷贝结构体数据）
             *data = packet;
         }
     }
@@ -429,6 +534,7 @@ MEDIA_PLAYER_FUNC(jint, playMedia) {
     Decoder data1 = {player, player->video_stream_index}, *decoder_data1 = &data1;
     pthread_create(&player->video_thread, NULL, decode_func, (void *) decoder_data1);
     Decoder data2 = {player, player->audio_stream_index}, *decoder_data2 = &data2;
+    pthread_create(&player->audio_thread, NULL, decode_func, (void *) decoder_data2);
 
     pthread_join(player->write_thread, NULL);
     pthread_join(player->video_thread, NULL);

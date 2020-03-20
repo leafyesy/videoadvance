@@ -5,7 +5,9 @@
 #ifndef VIDEOPLAYER_AVPACKET_QUEUE_H
 #define VIDEOPLAYER_AVPACKET_QUEUE_H
 #include <pthread.h>
-
+/**
+ * 音视频数据队列
+ */
 typedef struct AVPacketQueue{
     //队列大小
     int size;
