@@ -1,6 +1,7 @@
 package com.leafye.ffmpegapp.fragment
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -104,5 +105,11 @@ class CMediaFragment : SelectFileFragment<CMediaViewModel, FragmentCMediaBinding
     }
 
     override fun fragmentPrepared() {
+        getFragActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        getFragActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 }

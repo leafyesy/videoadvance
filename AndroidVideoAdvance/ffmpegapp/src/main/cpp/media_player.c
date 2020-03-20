@@ -134,8 +134,11 @@ int init_input_format_context(MediaPlayer *player, const char *file_name) {
 }
 
 //音视频解码器
-int init_condec_context(MediaPlayer *player) {
+//打开音视频解码器
+int init_condec_context(MediaPlayer* player){
+    //获取codec上下文指针
     player->video_codec_context = player->format_context->streams[player->video_stream_index]->codec;
+    //寻找视频流的解码器
     player->video_codec = avcodec_find_decoder(player->video_codec_context->codec_id);
     if (player->video_codec == NULL) {
         LOGE("Couldn't find video Codec.\n");
@@ -155,6 +158,7 @@ int init_condec_context(MediaPlayer *player) {
         LOGE(TAG, "Couldn't open audio Codec.\n");
         return ERROR_OPEN_AUDIO_CODEC;
     }
+    // 获取视频宽高
     player->video_width = player->video_codec_context->width;
     player->video_height = player->video_codec_context->height;
     LOGI(TAG, "video width:%d  height:%d", player->video_width, player->video_height);
@@ -176,6 +180,7 @@ void player_wait_for_frame(MediaPlayer *player, int64_t stream_time) {
         int64_t current_video_time = get_play_time(player);
         int64_t sleep_time = stream_time - current_video_time;
         if (sleep_time < -300000ll) {
+            // 300 ms late
             int64_t new_value = player->start_time - sleep_time;
             player->start_time = new_value;
             pthread_cond_broadcast(&player->cond);
@@ -251,8 +256,11 @@ int decode_video(MediaPlayer *player, AVPacket *packet) {
         }
         int64_t pts = av_frame_get_best_effort_timestamp(player->yuv_frame);
         AVStream *stream = player->format_context->streams[player->video_stream_index];
+        //转换（不同时间基时间转换）
         int64_t time = av_rescale_q(pts, stream->time_base, AV_TIME_BASE_Q);
+        //音视频帧同步
         player_wait_for_frame(player, time);
+
         ANativeWindow_unlockAndPost(player->native_window);
     }
     return 0;
@@ -261,10 +269,15 @@ int decode_video(MediaPlayer *player, AVPacket *packet) {
 void audio_decoder_prepare(MediaPlayer *player) {
     player->swr_context = swr_alloc();
     enum AVSampleFormat in_sample_fmt = player->audio_codec_context->sample_fmt;
+    //输出采样格式16bit PCM
     player->out_sample_fmt = AV_SAMPLE_FMT_S16;
+    //输入采样率
     int in_sample_rate = player->audio_codec_context->sample_rate;
+    //输出采样率
     player->out_sample_rate = in_sample_rate;
+    //声道布局（2个声道，默认立体声stereo）
     uint64_t in_ch_layout = player->audio_codec_context->channel_layout;
+    //输出的声道布局（立体声）
     uint64_t out_ch_layout = AV_CH_LAYOUT_STEREO;
     swr_alloc_set_opts(player->swr_context,
                        out_ch_layout, player->out_sample_fmt, player->out_sample_rate,
@@ -279,6 +292,7 @@ int audio_player_prepare(MediaPlayer *player, JNIEnv *env, jclass jthiz) {
         LOGE("player class not found");
         return -1;
     }
+    //AudioTrack对象
     jmethodID audio_track_method = (*env)->GetMethodID(
             env, player_class, "createAudioTrack", "(II)Landroid/media/AudioTrack;");
     if (!audio_track_method) {
@@ -290,6 +304,7 @@ int audio_player_prepare(MediaPlayer *player, JNIEnv *env, jclass jthiz) {
     jclass audio_track_class = (*env)->GetObjectClass(env, audio_track);
     jmethodID audio_track_play_mid = (*env)->GetMethodID(env, audio_track_class, "play", "()V");
     (*env)->CallVoidMethod(env, audio_track, audio_track_play_mid);
+
     player->audio_track = (*env)->NewGlobalRef(env, audio_track);
     player->audio_track_write_mid = (*env)->GetMethodID(env, audio_track_class, "write", "([BII)I");
     player->audio_buffer = av_malloc(MAX_AUDIO_FRAME_SIZE);
@@ -323,8 +338,7 @@ int decode_audio(MediaPlayer *player, AVPacket *packet) {
         if (javaVm != NULL) {
             JNIEnv *env;
             (*javaVm)->AttachCurrentThread(javaVm, &env, NULL);
-            jbyteArray audio_sample_array = (*env)->GetByteArrayElements(env, audio_sample_array,
-                                                                         NULL);
+            jbyteArray audio_sample_array = (*env)->NewByteArray(env,out_buffer_size);
             jbyte *sample_byte_array = (*env)->GetByteArrayElements(env, audio_sample_array, NULL);
             memcpy(sample_byte_array, player->audio_buffer, (size_t) out_buffer_size);
             (*env)->ReleaseByteArrayElements(env, audio_sample_array, sample_byte_array, 0);
@@ -429,6 +443,7 @@ MEDIA_PLAYER_FUNC(jint, playMedia) {
     Decoder data1 = {player, player->video_stream_index}, *decoder_data1 = &data1;
     pthread_create(&player->video_thread, NULL, decode_func, (void *) decoder_data1);
     Decoder data2 = {player, player->audio_stream_index}, *decoder_data2 = &data2;
+    pthread_create(&player->audio_thread,NULL,decode_func,(void*)decoder_data2);
 
     pthread_join(player->write_thread, NULL);
     pthread_join(player->video_thread, NULL);
