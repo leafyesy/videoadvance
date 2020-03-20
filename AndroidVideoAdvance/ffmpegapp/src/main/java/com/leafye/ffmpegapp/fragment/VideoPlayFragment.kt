@@ -1,6 +1,5 @@
 package com.leafye.ffmpegapp.fragment
 
-import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -8,11 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Surface
 import android.view.ViewGroup
-import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.leafye.base.BaseFragment
 import com.leafye.ffmpegapp.BR
 import com.leafye.ffmpegapp.R
 import com.leafye.ffmpegapp.YeFFmpeg
