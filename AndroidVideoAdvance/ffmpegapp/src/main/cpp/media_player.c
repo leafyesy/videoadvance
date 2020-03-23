@@ -434,7 +434,7 @@ int decode_audio(MediaPlayer *player, AVPacket *packet) {
         if (javaVm != NULL) {
             JNIEnv *env;
             (*javaVm)->AttachCurrentThread(javaVm, &env, NULL);
-            jbyteArray audio_sample_array = (*env)->NewByteArray(env,out_buffer_size);
+            jbyteArray audio_sample_array = (*env)->NewByteArray(env, out_buffer_size);
             jbyte *sample_byte_array = (*env)->GetByteArrayElements(env, audio_sample_array, NULL);
             memcpy(sample_byte_array, player->audio_buffer, (size_t) out_buffer_size);
             (*env)->ReleaseByteArrayElements(env, audio_sample_array, sample_byte_array, 0);
@@ -470,15 +470,18 @@ void *write_packet_to_queue(void *arg) {
     AVPacket packet, *pkt = &packet;
     int ret;
     for (;;) {
+        //读取一个frame数据
         ret = av_read_frame(player->format_context, pkt);
         if (ret < 0) {
             break;
         }
+        //判断数据为视频/音频
         if (pkt->stream_index == player->video_stream_index ||
             pkt->stream_index == player->audio_stream_index) {
             //根据AVPacket->stream_index获取对应的队列
             AVPacketQueue *queue = player->packets[pkt->stream_index];
             pthread_mutex_lock(&player->mutex);
+            //得到要被推入的内存指针
             AVPacket *data = queue_push(queue, &player->mutex, &player->cond);
             pthread_mutex_unlock(&player->mutex);
             //拷贝（间接赋值，拷贝结构体数据）
@@ -496,13 +499,16 @@ void *decode_func(void *arg) {
     int ret = 0;
     for (;;) {
         pthread_mutex_lock(&player->mutex);
+        //得到pop出来的内存指针
         AVPacket *packet = (AVPacket *) queue_pop(queue, &player->mutex, &player->cond);
         pthread_mutex_unlock(&player->mutex);
+        //根据stream_index确定解码的类型
         if (stream_index == player->video_stream_index) {
             ret = decode_video(player, packet);
         } else if (stream_index == player->audio_stream_index) {
             ret = decode_audio(player, packet);
         }
+        //释放已经被解码的地址
         av_packet_unref(packet);
         if (ret < 0) {
             break;
@@ -540,6 +546,7 @@ MEDIA_PLAYER_FUNC(jint, playMedia) {
     pthread_create(&player->write_thread, NULL, write_packet_to_queue, (void *) player);
     sleep(1);
     player->start_time = 0;
+    //创建一个decoder data1 并赋值给*decoder_data1
     Decoder data1 = {player, player->video_stream_index}, *decoder_data1 = &data1;
     pthread_create(&player->video_thread, NULL, decode_func, (void *) decoder_data1);
     Decoder data2 = {player, player->audio_stream_index}, *decoder_data2 = &data2;
