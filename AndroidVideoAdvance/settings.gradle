@@ -1,2 +1,6 @@
 include ':app', ':opengldemo', ':ffmpegapp', ':base', ':gpuimagedemo'
 rootProject.name='AndroidVideoAdvance'
+include ':annotationLib'
+include ':annotation'
+include ':apilib'
+include ':annotationtest'

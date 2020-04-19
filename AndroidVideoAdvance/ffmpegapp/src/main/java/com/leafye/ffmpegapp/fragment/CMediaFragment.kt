@@ -21,6 +21,7 @@ import com.leafye.ffmpegapp.utils.ContentUtils
 import com.leafye.ffmpegapp.view.VideoSurfaceView
 import com.leafye.ffmpegapp.vm.CMediaViewModel
 import kotlinx.android.synthetic.main.fragment_c_media.*
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.concurrent.thread
 
 /**
@@ -102,6 +103,7 @@ class CMediaFragment : SelectFileFragment<CMediaViewModel, FragmentCMediaBinding
                 }
             }
         }
+        //ConcurrentHashMap
     }
 
     override fun fragmentPrepared() {
