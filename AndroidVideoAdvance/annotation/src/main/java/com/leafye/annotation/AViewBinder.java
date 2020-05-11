@@ -25,9 +25,8 @@ public class AViewBinder {
                 binder = (ViewBinder) aClass.newInstance();
                 BINDER_MAP.put(className, binder);
             }
-            if (binder != null) {
-                binder.bindView(host, object, viewFinder);
-            }
+            binder.bindView(host, object, viewFinder);
+            //binder.bindOnClicks(host);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -37,10 +36,10 @@ public class AViewBinder {
         }
     }
 
-    public static void unBind(Object host){
+    public static void unBind(Object host) {
         String className = host.getClass().getName();
         ViewBinder binder = BINDER_MAP.get(className);
-        if (binder!=null){
+        if (binder != null) {
             binder.unBindView(host);
         }
         BINDER_MAP.remove(className);

@@ -11,32 +11,34 @@ import javax.lang.model.type.TypeMirror;
 /**
  * Created by leafye on 2020/4/18.
  */
-public class BindViewField {
+public class BindViewField implements BaseElement {
 
     private VariableElement mVariableElement;
     private int mResId;
 
-    public BindViewField(Element element) throws IllegalArgumentException{
-        if (ElementKind.FIELD !=element.getKind()) {
+    public BindViewField(Element element) throws IllegalArgumentException {
+        if (ElementKind.FIELD != element.getKind()) {
             throw new IllegalArgumentException(String.format("only fields can be annotated with @%s", BindView.class.getSimpleName()));
         }
         mVariableElement = (VariableElement) element;
         BindView bindView = mVariableElement.getAnnotation(BindView.class);
         mResId = bindView.value();
-        if (mResId<0){
-            throw new IllegalArgumentException(String.format("value() in %s for field %s is not valid!", BindView.class.getSimpleName(),mVariableElement.getSimpleName()));
+        if (mResId < 0) {
+            throw new IllegalArgumentException(String.format("value() in %s for field %s is not valid!", BindView.class.getSimpleName(), mVariableElement.getSimpleName()));
         }
     }
 
-    Name getFieldName(){
+    @Override
+    public Name getName() {
         return mVariableElement.getSimpleName();
     }
 
-    int getResId(){
+    int getResId() {
         return mResId;
     }
 
-    TypeMirror getFieldType(){
+    @Override
+    public TypeMirror getFieldType() {
         return mVariableElement.asType();
     }
 
